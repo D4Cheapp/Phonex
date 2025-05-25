@@ -1,5 +1,6 @@
-import { Roles } from 'src/constants/roles';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from 'src/role/role.entity';
+import { Shop } from 'src/shop/shop.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -15,6 +16,9 @@ export class User {
   @Column({ type: 'text' })
   password: string;
 
-  @Column({ enum: Roles, default: 'USER' })
-  role: Roles;
+  @ManyToOne(() => Role, (role) => role.id)
+  roleId: string;
+
+  @ManyToOne(() => Shop, (shop) => shop.id)
+  shopId: string;
 }
