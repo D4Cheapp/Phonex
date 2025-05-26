@@ -7,13 +7,13 @@ import { DataSource } from 'typeorm';
 import { Role } from './role/role.entity';
 import { RoleModule } from './role/role.module';
 import { RoleService } from './role/role.service';
+import { ShopController } from './shop/shop.controller';
+import { ShopModule } from './shop/shop.module';
+import { ShopService } from './shop/shop.service';
 import { UsersController } from './users/users.controller';
 import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
-import { ShopController } from './shop/shop.controller';
-import { ShopService } from './shop/shop.service';
-import { ShopModule } from './shop/shop.module';
 
 @Module({
   controllers: [UsersController, ShopController],

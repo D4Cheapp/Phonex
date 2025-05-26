@@ -7,7 +7,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
 
   @Column({ unique: true })
@@ -17,8 +17,8 @@ export class User {
   password: string;
 
   @ManyToOne(() => Role, (role) => role.id)
-  roleId: string;
+  roleId: number;
 
   @ManyToOne(() => Shop, (shop) => shop.id)
-  shopId: string;
+  shopId: number;
 }
