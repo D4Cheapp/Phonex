@@ -36,12 +36,13 @@ export class UsersController {
     return this.authService.parseToken(req);
   }
 
-  @RolesD([Roles.MANAGER])
+  @RolesD([Roles.ADMIN])
   @Get(':id')
   async getUserById(@Param('id') id: number) {
     return this.usersService.getUserById(id);
   }
 
+  @RolesD([Roles.ADMIN])
   @Post('register')
   async register(
     @Body() body: RegisterUserDto,
@@ -50,7 +51,7 @@ export class UsersController {
     return await this.usersService.registerUser(body, res);
   }
 
-  @RolesD([Roles.MANAGER])
+  @RolesD([Roles.ADMIN])
   @Patch(':id')
   async updateUserById(@Param('id') id: number, @Body() body: RegisterUserDto) {
     return this.usersService.updateUserById(id, body);
@@ -62,7 +63,7 @@ export class UsersController {
     return { message: 'User logged out successfully' };
   }
 
-  @RolesD([Roles.MANAGER])
+  @RolesD([Roles.ADMIN])
   @Delete(':id')
   async deleteUserById(@Param('id') id: number) {
     await this.usersService.deleteUserById(id);

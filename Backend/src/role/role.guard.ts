@@ -28,7 +28,7 @@ export class RoleGuard implements CanActivate {
     if (!cookies) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
     const user = await this.authService.parseToken(req);
-    const isValidRole = roles.includes(user.role.name) || user.role.name === 'ADMIN';
+    const isValidRole = roles.includes(user.role.name);
     if (!isValidRole) throw new HttpException('Permission denied', HttpStatus.FORBIDDEN);
 
     return true;
