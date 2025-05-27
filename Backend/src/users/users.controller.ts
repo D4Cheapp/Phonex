@@ -31,15 +31,15 @@ export class UsersController {
     return user;
   }
 
+  @Get('current')
+  async getCurrentUser(@Request() req: ExpressRequest) {
+    return this.authService.parseToken(req);
+  }
+
   @RolesD([Roles.MANAGER])
   @Get(':id')
   async getUserById(@Param('id') id: number) {
     return this.usersService.getUserById(id);
-  }
-
-  @Get()
-  async getCurrentUser(@Request() req: ExpressRequest) {
-    return this.authService.parseToken(req);
   }
 
   @Post('register')
@@ -56,16 +56,16 @@ export class UsersController {
     return this.usersService.updateUserById(id, body);
   }
 
+  @Delete('logout')
+  async logout(@Response({ passthrough: true }) res: ExpressResponse) {
+    await this.authService.logout(res);
+    return { message: 'User logged out successfully' };
+  }
+
   @RolesD([Roles.MANAGER])
   @Delete(':id')
   async deleteUserById(@Param('id') id: number) {
     await this.usersService.deleteUserById(id);
     return { message: 'User deleted successfully' };
-  }
-
-  @Delete()
-  async logout(@Response({ passthrough: true }) res: ExpressResponse) {
-    await this.authService.logout(res);
-    return { message: 'User logged out successfully' };
   }
 }
