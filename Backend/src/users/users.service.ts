@@ -1,11 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 
-import { compare, hash } from 'bcrypt';
-import { HASH_COST } from 'src/constants/hash-cost';
-import { Role } from 'src/role/role.entity';
+import { AuthService } from 'src/auth/auth.service';
 import { RoleService } from 'src/role/role.service';
-import { Shop } from 'src/shop/shop.entity';
 import { ShopService } from 'src/shop/shop.service';
 import { DataSource } from 'typeorm';
 
@@ -18,29 +14,19 @@ export class UsersService {
     private dataSource: DataSource,
     private shopService: ShopService,
     private roleService: RoleService,
-    private jwtService: JwtService
+    private authService: AuthService
   ) {}
 
-  async createUserToken(user: User, role: Role, shop: Shop) {
-    const tokenPayload = {
+  async getUserById(id: number) {
+    const user = await this.dataSource.getRepository(User).findOneBy({ id });
+    if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return {
       id: user.id,
-      email: user.email,
       name: user.name,
-      role,
-      shop,
+      email: user.email,
+      role: await this.roleService.getRoleById(user.roleId),
+      shop: await this.shopService.getShopById(user.shopId),
     };
-    return await this.jwtService.signAsync(tokenPayload);
-  }
-
-  async createHashPassword(password: string) {
-    return hash(password, HASH_COST);
-  }
-
-  async compareHashPassword(password: string, hashPassword: string) {
-    return compare(password, hashPassword, (err, res) => {
-      if (err) throw err;
-      if (!res) throw new HttpException('Password is not correct', HttpStatus.BAD_REQUEST);
-    });
   }
 
   async login(loginUser: LoginUserDto) {
@@ -49,13 +35,13 @@ export class UsersService {
     });
     if (!dbUser) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
-    await this.compareHashPassword(loginUser.password, dbUser.password);
+    await this.authService.compareHashPassword(loginUser.password, dbUser.password);
 
     const role = await this.roleService.getRoleById(dbUser.roleId);
     const shop = await this.shopService.getShopById(dbUser.shopId);
     if (!role || !shop) throw new HttpException('Role or shop not found', HttpStatus.BAD_REQUEST);
 
-    const token = await this.createUserToken(dbUser, role, shop);
+    const token = await this.authService.createUserToken(dbUser, role, shop);
     const user = {
       id: dbUser.id,
       name: dbUser.name,
@@ -71,7 +57,7 @@ export class UsersService {
     const role = await this.roleService.getRoleById(registerUser.roleId);
     if (!shop || !role) throw new HttpException('Shop or role not found', HttpStatus.BAD_REQUEST);
 
-    const hashPassword = await this.createHashPassword(registerUser.password);
+    const hashPassword = await this.authService.createHashPassword(registerUser.password);
     const user = await this.dataSource.getRepository(User).save({
       name: registerUser.name,
       email: registerUser.email,
@@ -79,7 +65,7 @@ export class UsersService {
       shop: shop,
       role: role,
     });
-    const token = await this.createUserToken(user, role, shop);
+    const token = await this.authService.createUserToken(user, role, shop);
 
     return { user, token };
   }

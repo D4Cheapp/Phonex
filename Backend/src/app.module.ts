@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DataSource } from 'typeorm';
 
+import { AuthModule } from './auth/auth.module';
 import { Role } from './role/role.entity';
 import { RoleModule } from './role/role.module';
 import { RoleService } from './role/role.service';
@@ -19,7 +20,7 @@ import { UsersService } from './users/users.service';
   controllers: [UsersController, ShopController],
   providers: [UsersService, RoleService, ShopService],
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -34,6 +35,7 @@ import { UsersService } from './users/users.service';
     UsersModule,
     RoleModule,
     ShopModule,
+    AuthModule,
   ],
 })
 export class AppModule {

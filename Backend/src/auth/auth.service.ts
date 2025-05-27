@@ -1,0 +1,43 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+
+import { compare, hash } from 'bcrypt';
+import { HASH_COST } from 'src/constants/hash-cost';
+import { Role } from 'src/role/role.entity';
+import { Shop } from 'src/shop/shop.entity';
+import { User } from 'src/users/users.entity';
+
+@Injectable()
+export class AuthService {
+  constructor(private jwtService: JwtService) {}
+
+  async createUserToken(user: User, role: Role, shop: Shop) {
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role,
+      shop,
+    };
+    return await this.jwtService.signAsync(tokenPayload, {
+      secret: process.env.JWT_SALT,
+    });
+  }
+
+  async createHashPassword(password: string) {
+    return hash(password, HASH_COST);
+  }
+
+  async compareHashPassword(password: string, hashPassword: string) {
+    const isCorrect = await compare(password, hashPassword);
+    if (!isCorrect) throw new HttpException('Password is not correct', HttpStatus.BAD_REQUEST);
+  }
+
+  async parseToken(token: string) {
+    const user = await this.jwtService.verifyAsync(token, {
+      secret: process.env.JWT_SALT,
+    });
+    if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return user;
+  }
+}
