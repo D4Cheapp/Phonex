@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { compare, hash } from 'bcrypt';
+import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { HASH_COST } from 'src/constants/hash-cost';
 import { Role } from 'src/role/role.entity';
 import { Shop } from 'src/shop/shop.entity';
@@ -33,11 +34,19 @@ export class AuthService {
     if (!isCorrect) throw new HttpException('Password is not correct', HttpStatus.BAD_REQUEST);
   }
 
-  async parseToken(token: string) {
-    const user = await this.jwtService.verifyAsync(token, {
+  async parseToken(req: ExpressRequest) {
+    const cookies = req.headers.cookie?.split('access_token=')[1];
+    if (!cookies) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+
+    const user = await this.jwtService.verifyAsync(cookies, {
       secret: process.env.JWT_SALT,
     });
     if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     return user;
+  }
+
+  async logout(res: ExpressResponse) {
+    res.clearCookie('access_token');
+    return { message: 'User logged out successfully' };
   }
 }

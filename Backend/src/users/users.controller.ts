@@ -1,21 +1,19 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
+  Patch,
   Post,
   Request,
   Response,
-  UseGuards,
 } from '@nestjs/common';
 
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { Roles } from 'src/constants/roles';
-import { RoleGuard } from 'src/role/role.guard';
-import { RolesDecorator } from 'src/role/roles.decorator';
+import { RolesD } from 'src/role/roles.decorator';
 
 import { LoginUserDto, RegisterUserDto } from './users.dto';
 import { UsersService } from './users.service';
@@ -27,8 +25,13 @@ export class UsersController {
     private authService: AuthService
   ) {}
 
-  @UseGuards(RoleGuard)
-  @RolesDecorator([Roles.ADMIN])
+  @Get('login')
+  async login(@Body() body: LoginUserDto, @Response({ passthrough: true }) res: ExpressResponse) {
+    const user = await this.usersService.login(body, res);
+    return user;
+  }
+
+  @RolesD([Roles.MANAGER])
   @Get(':id')
   async getUserById(@Param('id') id: number) {
     return this.usersService.getUserById(id);
@@ -36,19 +39,7 @@ export class UsersController {
 
   @Get()
   async getCurrentUser(@Request() req: ExpressRequest) {
-    const cookies = req.headers.cookie?.split('access_token=')[1];
-    if (!cookies) throw new HttpException('Token not found', HttpStatus.BAD_REQUEST);
-    return this.authService.parseToken(cookies);
-  }
-
-  @Get('login')
-  async login(@Body() body: LoginUserDto, @Response({ passthrough: true }) res: ExpressResponse) {
-    const { user, token } = await this.usersService.login(body);
-    res.cookie('access_token', token, {
-      httpOnly: true,
-      secure: true,
-    });
-    return user;
+    return this.authService.parseToken(req);
   }
 
   @Post('register')
@@ -56,8 +47,25 @@ export class UsersController {
     @Body() body: RegisterUserDto,
     @Response({ passthrough: true }) res: ExpressResponse
   ) {
-    const { user, token } = await this.usersService.registerUser(body);
-    res.cookie('access_token', token);
-    return user;
+    return await this.usersService.registerUser(body, res);
+  }
+
+  @RolesD([Roles.MANAGER])
+  @Patch(':id')
+  async updateUserById(@Param('id') id: number, @Body() body: RegisterUserDto) {
+    return this.usersService.updateUserById(id, body);
+  }
+
+  @RolesD([Roles.MANAGER])
+  @Delete(':id')
+  async deleteUserById(@Param('id') id: number) {
+    await this.usersService.deleteUserById(id);
+    return { message: 'User deleted successfully' };
+  }
+
+  @Delete()
+  async logout(@Response({ passthrough: true }) res: ExpressResponse) {
+    await this.authService.logout(res);
+    return { message: 'User logged out successfully' };
   }
 }
