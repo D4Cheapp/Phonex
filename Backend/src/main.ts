@@ -13,11 +13,7 @@ const start = async () => {
 
   app.useGlobalGuards(new RoleGuard(app.get(AuthService), app.get(Reflector)));
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Phonex API')
-    .setDescription('Phonex API description')
-    .setVersion('1.0')
-    .build();
+  const swaggerConfig = new DocumentBuilder().setTitle('Phonex API').setVersion('1.0').build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('/api/swagger', app, documentFactory);
 

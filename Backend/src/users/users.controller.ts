@@ -25,12 +25,6 @@ export class UsersController {
     private authService: AuthService
   ) {}
 
-  @Get('login')
-  async login(@Body() body: LoginUserDto, @Response({ passthrough: true }) res: ExpressResponse) {
-    const user = await this.usersService.login(body, res);
-    return user;
-  }
-
   @Get('current')
   async getCurrentUser(@Request() req: ExpressRequest) {
     return this.authService.parseToken(req);
@@ -40,6 +34,12 @@ export class UsersController {
   @Get(':id')
   async getUserById(@Param('id') id: number) {
     return this.usersService.getUserById(id);
+  }
+
+  @Post('login')
+  async login(@Body() body: LoginUserDto, @Response({ passthrough: true }) res: ExpressResponse) {
+    const user = await this.usersService.login(body, res);
+    return user;
   }
 
   @RolesD([Roles.ADMIN])
