@@ -19,5 +19,5 @@ export class Product {
   price: number;
 
   @ManyToOne(() => ProductCategory, (category) => category.id)
-  productCategoryId: number;
+  productCategory: number;
 }

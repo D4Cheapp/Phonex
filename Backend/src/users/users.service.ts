@@ -25,8 +25,8 @@ export class UsersService {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: await this.roleService.getRoleById(user.roleId),
-      shop: await this.shopService.getShopById(user.shopId),
+      role: await this.roleService.getRoleById(user.role),
+      shop: await this.shopService.getShopById(user.shop),
     };
   }
 
@@ -46,8 +46,6 @@ export class UsersService {
   }
 
   async login(loginUser: LoginUserDto, res: ExpressResponse) {
-    console.log(loginUser);
-
     const dbUser = await this.dataSource
       .getRepository(User)
       .findOneBy({
@@ -60,8 +58,8 @@ export class UsersService {
 
     await this.authService.compareHashPassword(loginUser.password, dbUser.password);
 
-    const role = await this.roleService.getRoleById(dbUser.roleId);
-    const shop = await this.shopService.getShopById(dbUser.shopId);
+    const role = await this.roleService.getRoleById(dbUser.role);
+    const shop = await this.shopService.getShopById(dbUser.shop);
     if (!role || !shop) throw new HttpException('Role or shop not found', HttpStatus.BAD_REQUEST);
 
     const token = await this.authService.createUserToken(dbUser, role, shop);
@@ -90,8 +88,8 @@ export class UsersService {
         name: registerUser.name,
         email: registerUser.email,
         password: hashPassword,
-        shop: shop,
-        role: role,
+        shop: shop.id,
+        role: role.id,
       })
       .catch(() => {
         throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
