@@ -42,7 +42,13 @@ export class AuthService {
       secret: process.env.JWT_SALT,
     });
     if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      shop: user.shop,
+    };
   }
 
   async logout(res: ExpressResponse) {

@@ -1,8 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
+import fs from 'fs';
+import path from 'path';
 import { ProductCategory } from 'src/products-category/product-category.entity';
 import { DataSource } from 'typeorm';
 
+import { ProductDto } from './product.dto';
 import { Product } from './product.entity';
 
 @Injectable()
@@ -22,5 +25,22 @@ export class ProductsService {
       ...product,
       category,
     };
+  }
+
+  async createProduct(productDto: ProductDto, imagePath: string) {
+    const product = await this.dataSource
+      .getRepository(Product)
+      .save({
+        name: productDto.name,
+        description: productDto.description,
+        image: path.parse(imagePath).base,
+        price: productDto.price,
+        productCategoryId: productDto.productCategoryId,
+      })
+      .catch(() => {
+        fs.unlinkSync(path.join('uploads', 'products', path.parse(imagePath).base));
+        throw new HttpException('Product already exists', HttpStatus.BAD_REQUEST);
+      });
+    return product;
   }
 }

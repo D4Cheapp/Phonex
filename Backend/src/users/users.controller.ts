@@ -27,13 +27,13 @@ export class UsersController {
 
   @Get('current')
   async getCurrentUser(@Request() req: ExpressRequest) {
-    return this.authService.parseToken(req);
+    return await this.authService.parseToken(req);
   }
 
-  @RolesD([Roles.ADMIN])
   @Get(':id')
+  @RolesD([Roles.ADMIN])
   async getUserById(@Param('id') id: number) {
-    return this.usersService.getUserById(id);
+    return await this.usersService.getUserById(id);
   }
 
   @Post('login')
@@ -42,8 +42,8 @@ export class UsersController {
     return user;
   }
 
-  @RolesD([Roles.ADMIN])
   @Post('register')
+  @RolesD([Roles.ADMIN])
   async register(
     @Body() body: RegisterUserDto,
     @Response({ passthrough: true }) res: ExpressResponse
@@ -51,10 +51,10 @@ export class UsersController {
     return await this.usersService.registerUser(body, res);
   }
 
-  @RolesD([Roles.ADMIN])
   @Patch(':id')
+  @RolesD([Roles.ADMIN])
   async updateUserById(@Param('id') id: number, @Body() body: RegisterUserDto) {
-    return this.usersService.updateUserById(id, body);
+    return await this.usersService.updateUserById(id, body);
   }
 
   @Delete('logout')
@@ -63,8 +63,8 @@ export class UsersController {
     return { message: 'User logged out successfully' };
   }
 
-  @RolesD([Roles.ADMIN])
   @Delete(':id')
+  @RolesD([Roles.ADMIN])
   async deleteUserById(@Param('id') id: number) {
     await this.usersService.deleteUserById(id);
     return { message: 'User deleted successfully' };

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProductCategory } from './products-category/product-category.entity';
 import { ProductCategoryModule } from './products-category/product-category.module';
 import { Product } from './products/product.entity';
+import { ProductsModule } from './products/products.module';
 import { Role } from './role/role.entity';
 import { RoleModule } from './role/role.module';
 import { Shop } from './shop/shop.entity';
@@ -33,6 +34,7 @@ import { UsersModule } from './users/users.module';
     RoleModule,
     ShopModule,
     AuthModule,
+    ProductsModule,
     ProductCategoryModule,
   ],
 })

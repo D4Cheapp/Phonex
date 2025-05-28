@@ -46,9 +46,16 @@ export class UsersService {
   }
 
   async login(loginUser: LoginUserDto, res: ExpressResponse) {
-    const dbUser = await this.dataSource.getRepository(User).findOneBy({
-      email: loginUser.email,
-    });
+    console.log(loginUser);
+
+    const dbUser = await this.dataSource
+      .getRepository(User)
+      .findOneBy({
+        email: loginUser.email,
+      })
+      .catch(() => {
+        throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+      });
     if (!dbUser) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
     await this.authService.compareHashPassword(loginUser.password, dbUser.password);
