@@ -17,8 +17,8 @@ export class User {
   password: string;
 
   @ManyToOne(() => Role, (role) => role.id)
-  roleId: number;
+  role: Role;
 
   @ManyToOne(() => Shop, (shop) => shop.id)
-  shopId: number;
+  shop: Shop;
 }

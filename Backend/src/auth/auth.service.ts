@@ -4,25 +4,27 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { HASH_COST } from 'src/constants/hash-cost';
-import { Role } from 'src/role/role.entity';
-import { Shop } from 'src/shop/shop.entity';
 import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async createUserToken(user: User, role: Role, shop: Shop) {
+  async createUserToken(user: User) {
     const tokenPayload = {
       id: user.id,
       email: user.email,
       name: user.name,
-      role,
-      shop,
+      role: user.role,
+      shop: user.shop,
     };
-    return await this.jwtService.signAsync(tokenPayload, {
-      secret: process.env.JWT_SALT,
-    });
+    return await this.jwtService
+      .signAsync(tokenPayload, {
+        secret: process.env.JWT_SALT,
+      })
+      .catch(() => {
+        throw new HttpException('Error while creating token', HttpStatus.BAD_REQUEST);
+      });
   }
 
   async createHashPassword(password: string) {
@@ -42,7 +44,13 @@ export class AuthService {
       secret: process.env.JWT_SALT,
     });
     if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      shop: user.shop,
+    };
   }
 
   async logout(res: ExpressResponse) {

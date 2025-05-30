@@ -9,17 +9,20 @@ import { Reflector } from '@nestjs/core';
 
 import { AuthService } from 'src/auth/auth.service';
 
-import { RolesD } from './roles.decorator';
+import { RolesD } from '../role/roles.decorator';
 
 @Injectable()
-export class RoleGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
     private reflector: Reflector
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const roles = this.reflector.get<string[]>(RolesD, context.getHandler());
+    const roles = this.reflector.getAllAndOverride<string[]>(RolesD, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     if (!roles) return true;
 
     const req = context.switchToHttp().getRequest();
@@ -28,7 +31,7 @@ export class RoleGuard implements CanActivate {
     if (!cookies) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
     const user = await this.authService.parseToken(req);
-    const isValidRole = roles.includes(user.role.name) || user.role.name === 'ADMIN';
+    const isValidRole = roles.includes(user.role.name);
     if (!isValidRole) throw new HttpException('Permission denied', HttpStatus.FORBIDDEN);
 
     return true;

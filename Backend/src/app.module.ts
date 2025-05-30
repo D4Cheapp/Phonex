@@ -5,20 +5,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
+import { ProductCategory } from './products-category/product-category.entity';
+import { ProductCategoryModule } from './products-category/product-category.module';
+import { ProductCharacteristic } from './products-characteristic/product-characteristic.entity';
+import { ProductsCharacteristicModule } from './products-characteristic/products-characteristic.module';
+import { Product } from './products/product.entity';
+import { ProductsModule } from './products/products.module';
 import { Role } from './role/role.entity';
 import { RoleModule } from './role/role.module';
-import { RoleService } from './role/role.service';
-import { ShopController } from './shop/shop.controller';
+import { Shop } from './shop/shop.entity';
 import { ShopModule } from './shop/shop.module';
-import { ShopService } from './shop/shop.service';
-import { UsersController } from './users/users.controller';
 import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
 
 @Module({
-  controllers: [UsersController, ShopController],
-  providers: [UsersService, RoleService, ShopService],
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
@@ -28,7 +29,7 @@ import { UsersService } from './users/users.service';
       username: process.env.POSTGRES_USER,
       password: String(process.env.POSTGRES_PASSWORD),
       database: process.env.POSTGRES_DB,
-      entities: [User, Role],
+      entities: [User, Role, Shop, ProductCategory, Product, ProductCharacteristic],
       synchronize: true,
       autoLoadEntities: true,
     }),
@@ -36,6 +37,10 @@ import { UsersService } from './users/users.service';
     RoleModule,
     ShopModule,
     AuthModule,
+    FilesModule,
+    ProductsModule,
+    ProductCategoryModule,
+    ProductsCharacteristicModule,
   ],
 })
 export class AppModule {
