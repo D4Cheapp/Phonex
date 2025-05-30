@@ -5,8 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
 import { ProductCategory } from './products-category/product-category.entity';
 import { ProductCategoryModule } from './products-category/product-category.module';
+import { ProductCharacteristic } from './products-characteristic/product-characteristic.entity';
+import { ProductsCharacteristicModule } from './products-characteristic/products-characteristic.module';
 import { Product } from './products/product.entity';
 import { ProductsModule } from './products/products.module';
 import { Role } from './role/role.entity';
@@ -15,7 +18,6 @@ import { Shop } from './shop/shop.entity';
 import { ShopModule } from './shop/shop.module';
 import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
-import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { FilesModule } from './files/files.module';
       username: process.env.POSTGRES_USER,
       password: String(process.env.POSTGRES_PASSWORD),
       database: process.env.POSTGRES_DB,
-      entities: [User, Role, Shop, ProductCategory, Product],
+      entities: [User, Role, Shop, ProductCategory, Product, ProductCharacteristic],
       synchronize: true,
       autoLoadEntities: true,
     }),
@@ -35,9 +37,10 @@ import { FilesModule } from './files/files.module';
     RoleModule,
     ShopModule,
     AuthModule,
+    FilesModule,
     ProductsModule,
     ProductCategoryModule,
-    FilesModule,
+    ProductsCharacteristicModule,
   ],
 })
 export class AppModule {

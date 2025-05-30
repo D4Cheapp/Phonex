@@ -83,7 +83,7 @@ export class ProductsController {
     @Body() body: ProductDto,
     @UploadedFile() image: Express.Multer.File
   ) {
-    return await this.productsService.updateProductImage(id, body, image.path);
+    return await this.productsService.updateProduct(id, body, image.path);
   }
 
   @Delete(':id')

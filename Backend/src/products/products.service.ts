@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import fs from 'fs';
 import path from 'path';
+import { ProductsCharacteristicService } from 'src/products-characteristic/products-characteristic.service';
 import { createPaginationData } from 'src/utils/createPaginationData';
 import { DataSource } from 'typeorm';
 import { Like } from 'typeorm';
@@ -12,7 +13,10 @@ import { ProductsDto } from './products.dto';
 
 @Injectable()
 export class ProductsService {
-  constructor(private dataSource: DataSource) {}
+  constructor(
+    private dataSource: DataSource,
+    private productsCharacteristicService: ProductsCharacteristicService
+  ) {}
 
   async getAllProducts(query: ProductsDto) {
     const { page, perPage, search, category } = query;
@@ -46,7 +50,14 @@ export class ProductsService {
       });
     if (!product?.id) throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
 
-    return product;
+    const characteristics = await this.productsCharacteristicService.getProductCharacteristics(
+      product.id
+    );
+
+    return {
+      ...product,
+      characteristics,
+    };
   }
 
   async createProduct(productDto: ProductDto, imagePath: string) {
@@ -66,10 +77,15 @@ export class ProductsService {
         });
         throw new HttpException('Product already exists', HttpStatus.BAD_REQUEST);
       });
-    return product;
+
+    const characteristics = await this.productsCharacteristicService.createProductCharacteristics(
+      productDto.characteristics,
+      product.id
+    );
+    return { product, characteristics };
   }
 
-  async updateProductImage(id: number, productDto: ProductDto, imagePath: string) {
+  async updateProduct(id: number, productDto: ProductDto, imagePath: string) {
     const product = await this.dataSource
       .getRepository(Product)
       .findOne({ where: { id }, relations: ['productCategory'] })
@@ -104,6 +120,7 @@ export class ProductsService {
     fs.unlink(path.join(__dirname, '../uploads', path.parse(product.image).base), (err) => {
       console.log(err);
     });
+
     return await this.dataSource
       .getRepository(Product)
       .findOne({ where: { id }, relations: ['productCategory'] })
@@ -124,11 +141,13 @@ export class ProductsService {
     const deletedProduct = await this.dataSource
       .getRepository(Product)
       .delete({ id })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e);
         throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
       });
     if (deletedProduct.affected === 0)
       throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
+
     fs.unlink(path.join(__dirname, '../uploads', path.parse(product.image).base), (err) =>
       console.log(err)
     );

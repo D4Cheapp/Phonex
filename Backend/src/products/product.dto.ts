@@ -26,4 +26,17 @@ export class ProductDto {
   @IsNumber()
   @IsNotEmpty()
   productCategoryId: number;
+
+  @ApiProperty({
+    type: 'array',
+    example: [
+      {
+        name: 'color',
+        value: 'red',
+      },
+    ],
+  })
+  @IsString()
+  @IsNotEmpty()
+  characteristics: { name: string; value: string }[];
 }
