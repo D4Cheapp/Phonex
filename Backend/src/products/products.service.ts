@@ -121,12 +121,19 @@ export class ProductsService {
       console.log(err);
     });
 
-    return await this.dataSource
-      .getRepository(Product)
-      .findOne({ where: { id }, relations: ['productCategory'] })
-      .catch(() => {
-        throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
-      });
+    await this.productsCharacteristicService.updateProductCharacteristics(
+      productDto.characteristics
+    );
+
+    return {
+      product: await this.dataSource
+        .getRepository(Product)
+        .findOne({ where: { id }, relations: ['productCategory'] })
+        .catch(() => {
+          throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
+        }),
+      characteristics: await this.productsCharacteristicService.getProductCharacteristics(id),
+    };
   }
 
   async deleteProductById(id: number) {

@@ -38,5 +38,5 @@ export class ProductDto {
   })
   @IsString()
   @IsNotEmpty()
-  characteristics: { name: string; value: string }[];
+  characteristics: { id: number; name: string; value: string }[];
 }

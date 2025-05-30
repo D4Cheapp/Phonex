@@ -48,9 +48,28 @@ export class ProductsCharacteristicService {
   }
 
   async updateProductCharacteristics(
-    characteristics: { name: string; value: string }[],
-    productId: number
+    characteristics: { id: number; name: string; value: string }[]
   ) {
-    //TODO
+    return await Promise.all(
+      characteristics.flatMap(async (characteristic) => {
+        try {
+          if (!characteristic.id) {
+            throw new HttpException('Invalid characteristic format', HttpStatus.BAD_REQUEST);
+          }
+          return await this.dataSource
+            .getRepository(ProductCharacteristic)
+            .update(
+              { id: characteristic.id },
+              { name: characteristic.name, value: characteristic.value }
+            )
+            .catch(() => {
+              throw new HttpException('Characteristics update failed', HttpStatus.BAD_REQUEST);
+            });
+        } catch (error) {
+          console.log(error);
+          throw new HttpException('Invalid characteristic format', HttpStatus.BAD_REQUEST);
+        }
+      })
+    );
   }
 }
