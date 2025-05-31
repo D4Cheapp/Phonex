@@ -1,4 +1,43 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
+
+import { Roles } from 'src/constants/roles';
+import { RolesD } from 'src/role/roles.decorator';
+
+import { ProductSupplierDto } from './product-supplier.dto';
+import { ProductSupplierService } from './product-supplier.service';
 
 @Controller('product-supplier')
-export class ProductSupplierController {}
+export class ProductSupplierController {
+  constructor(private readonly productSupplierService: ProductSupplierService) {}
+
+  @Get()
+  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  @ApiQuery({ name: 'shopId', required: false, type: Number })
+  @ApiQuery({ name: 'productId', required: false, type: Number })
+  async getAllProductSuppliers(
+    @Query('shopId') shopId?: number,
+    @Query('productId') productId?: number
+  ) {
+    return await this.productSupplierService.getAllProductSuppliers(shopId, productId);
+  }
+
+  @Post()
+  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  async createProductSupplier(@Body() body: ProductSupplierDto) {
+    return await this.productSupplierService.createProductSupplier(body);
+  }
+
+  @Patch(':id')
+  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  async updateProductSupplier(@Param('id') id: number, @Body() body: ProductSupplierDto) {
+    return await this.productSupplierService.updateProductSupplier(id, body);
+  }
+
+  @Delete(':id')
+  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  async deleteProductSupplier(@Param('id') id: number) {
+    await this.productSupplierService.deleteProductSupplier(id);
+    return { message: 'Product supplier deleted successfully' };
+  }
+}
