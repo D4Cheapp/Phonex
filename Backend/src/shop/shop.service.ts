@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { Roles } from 'src/constants/roles';
+import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 import { DataSource } from 'typeorm';
 
@@ -11,7 +11,7 @@ import { Shop } from './shop.entity';
 export class ShopService {
   constructor(private dataSource: DataSource) {}
 
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async createShop(shopDto: ShopDto) {
     return await this.dataSource
       .getRepository(Shop)
@@ -41,7 +41,7 @@ export class ShopService {
     return shop;
   }
 
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async updateShop(id: number, shopDto: ShopDto) {
     await this.dataSource
       .getRepository(Shop)
@@ -58,7 +58,7 @@ export class ShopService {
     return { id: Number(id), ...shopDto };
   }
 
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async deleteShop(id: number) {
     return await this.dataSource
       .getRepository(Shop)

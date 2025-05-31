@@ -65,7 +65,7 @@ export class UsersService {
         name: registerUser.name,
         email: registerUser.email,
         password: hashPassword,
-        shop: { id: registerUser.shopId },
+        ...(registerUser.shopId && { shop: { id: registerUser.shopId } }),
         role: { id: registerUser.roleId },
       })
       .catch((e) => {

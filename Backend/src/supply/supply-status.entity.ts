@@ -1,11 +1,11 @@
-import { RolesE } from 'src/constants/roles';
+import { SupplyStatusE } from 'src/constants/supply-status';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Role {
+export class SupplyStatus {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, enum: RolesE })
+  @Column({ unique: true, enum: SupplyStatusE })
   name: string;
 }

@@ -1,10 +1,10 @@
 import { SetMetadata, applyDecorators } from '@nestjs/common';
 import { ApiCookieAuth } from '@nestjs/swagger';
 
-import { Roles } from 'src/constants/roles';
+import { RolesE } from 'src/constants/roles';
 
 const ROLES_KEY = 'roles';
 
-export const RolesD = (roles: Roles[]) => {
+export const RolesD = (roles: RolesE[]) => {
   return applyDecorators(SetMetadata(ROLES_KEY, roles), ApiCookieAuth());
 };

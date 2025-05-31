@@ -20,10 +20,14 @@ import { Shop } from './shop/shop.entity';
 import { ShopModule } from './shop/shop.module';
 import { Supplier } from './supplier/supplier.entity';
 import { SupplierModule } from './supplier/supplier.module';
+import { SupplyItem } from './supply/supply-item.entity';
+import { SupplyStatus } from './supply/supply-status.entity';
+import { Supply } from './supply/supply.entity';
+import { SupplyModule } from './supply/supply.module';
 import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
-import { Warehouse } from './warehouse/warehouse.entity';
-import { WarehouseModule } from './warehouse/warehouse.module';
+import { WarehouseProduct } from './warehouse-product/warehouse-product.entity';
+import { WarehouseProductModule } from './warehouse-product/warehouse-product.module';
 
 @Module({
   imports: [
@@ -39,11 +43,14 @@ import { WarehouseModule } from './warehouse/warehouse.module';
         User,
         Role,
         Shop,
-        Warehouse,
+        WarehouseProduct,
         ProductCategory,
         Product,
         ProductCharacteristic,
         Supplier,
+        Supply,
+        SupplyStatus,
+        SupplyItem,
         ProductSupplier,
       ],
       synchronize: true,
@@ -57,9 +64,10 @@ import { WarehouseModule } from './warehouse/warehouse.module';
     ProductsModule,
     ProductCategoryModule,
     ProductsCharacteristicModule,
-    WarehouseModule,
+    WarehouseProductModule,
     ProductSupplierModule,
     SupplierModule,
+    SupplyModule,
   ],
 })
 export class AppModule {
