@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { SupplyStatusE } from 'src/constants/supply-status';
 import { ProductSupplier } from 'src/product-supplier/product-supplier.entity';
-import { WarehouseService } from 'src/warehouse/warehouse.service';
+import { WarehouseProductService } from 'src/warehouse-product/warehouse-product.service';
 import { DataSource } from 'typeorm';
 
 import { SupplyItem } from './supply-item.entity';
@@ -14,7 +14,7 @@ import { Supply } from './supply.entity';
 export class SupplyService {
   constructor(
     private readonly dataSource: DataSource,
-    private readonly warehouseService: WarehouseService
+    private readonly warehouseService: WarehouseProductService
   ) {}
 
   async getSupplyByShopId(shopId: number) {

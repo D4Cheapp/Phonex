@@ -1,13 +1,15 @@
 import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
-import { WarehouseService } from './warehouse.service';
+import { WarehouseProductService } from './warehouse-product.service';
 
-@Controller('warehouse')
-export class WarehouseController {
-  constructor(private readonly warehouseService: WarehouseService) {}
+@ApiTags('Warehouse product')
+@Controller('warehouse-product')
+export class WarehouseProductController {
+  constructor(private readonly warehouseService: WarehouseProductService) {}
 
   @Get(':id')
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])

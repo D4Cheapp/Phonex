@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Warehouse } from 'src/warehouse/warehouse.entity';
-import { WarehouseModule } from 'src/warehouse/warehouse.module';
+import { WarehouseProduct } from 'src/warehouse-product/warehouse-product.entity';
+import { WarehouseProductModule } from 'src/warehouse-product/warehouse-product.module';
 
 import { SupplyItem } from './supply-item.entity';
 import { SupplyStatus } from './supply-status.entity';
@@ -12,8 +12,8 @@ import { SupplyService } from './supply.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Supply, SupplyStatus, SupplyItem, Warehouse]),
-    WarehouseModule,
+    TypeOrmModule.forFeature([Supply, SupplyStatus, SupplyItem, WarehouseProduct]),
+    WarehouseProductModule,
   ],
   controllers: [SupplyController],
   providers: [SupplyService],

@@ -3,7 +3,7 @@ import { Shop } from 'src/shop/shop.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Warehouse {
+export class WarehouseProduct {
   @PrimaryGeneratedColumn()
   id: number;
 
