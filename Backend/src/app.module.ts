@@ -20,6 +20,10 @@ import { Shop } from './shop/shop.entity';
 import { ShopModule } from './shop/shop.module';
 import { Supplier } from './supplier/supplier.entity';
 import { SupplierModule } from './supplier/supplier.module';
+import { SupplyItem } from './supply/supply-item.entity';
+import { SupplyStatus } from './supply/supply-status.entity';
+import { Supply } from './supply/supply.entity';
+import { SupplyModule } from './supply/supply.module';
 import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
 import { Warehouse } from './warehouse/warehouse.entity';
@@ -44,6 +48,9 @@ import { WarehouseModule } from './warehouse/warehouse.module';
         Product,
         ProductCharacteristic,
         Supplier,
+        Supply,
+        SupplyStatus,
+        SupplyItem,
         ProductSupplier,
       ],
       synchronize: true,
@@ -60,6 +67,7 @@ import { WarehouseModule } from './warehouse/warehouse.module';
     WarehouseModule,
     ProductSupplierModule,
     SupplierModule,
+    SupplyModule,
   ],
 })
 export class AppModule {

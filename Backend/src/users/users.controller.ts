@@ -12,7 +12,7 @@ import {
 
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { AuthService } from 'src/auth/auth.service';
-import { Roles } from 'src/constants/roles';
+import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
 import { LoginUserDto, RegisterUserDto } from './users.dto';
@@ -31,7 +31,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async getUserById(@Param('id') id: number) {
     return await this.usersService.getUserById(id);
   }
@@ -43,7 +43,7 @@ export class UsersController {
   }
 
   @Post('register')
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async register(
     @Body() body: RegisterUserDto,
     @Response({ passthrough: true }) res: ExpressResponse
@@ -52,7 +52,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async updateUserById(@Param('id') id: number, @Body() body: RegisterUserDto) {
     return await this.usersService.updateUserById(id, body);
   }
@@ -64,7 +64,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @RolesD([Roles.ADMIN])
+  @RolesD([RolesE.ADMIN])
   async deleteUserById(@Param('id') id: number) {
     await this.usersService.deleteUserById(id);
     return { message: 'User deleted successfully' };

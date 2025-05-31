@@ -1,6 +1,6 @@
 import { Product } from 'src/products/product.entity';
 import { Shop } from 'src/shop/shop.entity';
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Warehouse {
@@ -10,8 +10,8 @@ export class Warehouse {
   @Column()
   quantity: number;
 
-  @ManyToMany(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
-  products: Product[];
+  @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
+  product: Product;
 
   @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
   shop: Shop;

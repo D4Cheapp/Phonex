@@ -15,7 +15,7 @@ import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 
 import { diskStorage } from 'multer';
 import path, { extname } from 'path';
-import { Roles } from 'src/constants/roles';
+import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
 import { ProductDto } from './product.dto';
@@ -46,7 +46,7 @@ export class ProductsController {
 
   @Post()
   @ApiBearerAuth()
-  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -65,7 +65,7 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -88,7 +88,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @RolesD([Roles.ADMIN, Roles.MANAGER])
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
   async deleteProductById(@Param('id') id: number) {
     await this.productsService.deleteProductById(id);
     return { message: 'Product deleted successfully' };
