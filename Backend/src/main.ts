@@ -13,9 +13,22 @@ const start = async () => {
 
   app.useGlobalGuards(new AuthGuard(app.get(AuthService), app.get(Reflector)));
 
-  const swaggerConfig = new DocumentBuilder().setTitle('Phonex API').setVersion('1.0').build();
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Phonex API')
+    .setVersion('1.0')
+    .addCookieAuth('auth_token', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'access_token',
+    })
+    .build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('/api/swagger', app, documentFactory);
+  SwaggerModule.setup('/api/swagger', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      withCredentials: true,
+    },
+  });
 
   await app.listen(PORT, () => console.log(`Server started on port ${PORT ?? 3000}`));
 };

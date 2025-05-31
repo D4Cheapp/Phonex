@@ -1,18 +1,73 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
+import { Roles } from 'src/constants/roles';
+import { RolesD } from 'src/role/roles.decorator';
 import { DataSource } from 'typeorm';
 
+import { ShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
 
 @Injectable()
 export class ShopService {
   constructor(private dataSource: DataSource) {}
 
-  getShopById(id: number) {
-    const shop = this.dataSource.getRepository(Shop).findOneBy({ id });
+  @RolesD([Roles.ADMIN])
+  async createShop(shopDto: ShopDto) {
+    return await this.dataSource
+      .getRepository(Shop)
+      .save({
+        name: shopDto.name,
+        address: shopDto.address,
+      })
+      .catch(() => {
+        throw new HttpException('Shop already exists', HttpStatus.BAD_REQUEST);
+      });
+  }
+
+  async getAllShops() {
+    return await this.dataSource
+      .getRepository(Shop)
+      .find()
+      .catch(() => {
+        throw new HttpException('Shops not found', HttpStatus.BAD_REQUEST);
+      });
+  }
+
+  async getShopById(id: number) {
+    const shop = await this.dataSource.getRepository(Shop).findOneBy({ id });
 
     if (!shop) throw new HttpException('Shop not found', HttpStatus.BAD_REQUEST);
 
     return shop;
+  }
+
+  @RolesD([Roles.ADMIN])
+  async updateShop(id: number, shopDto: ShopDto) {
+    await this.dataSource
+      .getRepository(Shop)
+      .update(
+        { id },
+        {
+          name: shopDto.name,
+          address: shopDto.address,
+        }
+      )
+      .catch(() => {
+        throw new HttpException('Shop not found', HttpStatus.BAD_REQUEST);
+      });
+    return { id: Number(id), ...shopDto };
+  }
+
+  @RolesD([Roles.ADMIN])
+  async deleteShop(id: number) {
+    return await this.dataSource
+      .getRepository(Shop)
+      .delete({ id })
+      .catch(() => {
+        throw new HttpException(
+          'Shop deletion error. Check if shop has users or products',
+          HttpStatus.BAD_REQUEST
+        );
+      });
   }
 }

@@ -5,6 +5,9 @@ export class Shop {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  name: string;
+
   @Column({ unique: true })
   address: string;
 }

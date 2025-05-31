@@ -31,7 +31,7 @@ export class ProductsCharacteristicService {
               throw new HttpException('Characteristics creation failed', HttpStatus.BAD_REQUEST);
             });
         } catch (error) {
-          console.log(error);
+          console.error(error);
           throw new HttpException('Invalid characteristic format', HttpStatus.BAD_REQUEST);
         }
       })
@@ -66,7 +66,7 @@ export class ProductsCharacteristicService {
               throw new HttpException('Characteristics update failed', HttpStatus.BAD_REQUEST);
             });
         } catch (error) {
-          console.log(error);
+          console.error(error);
           throw new HttpException('Invalid characteristic format', HttpStatus.BAD_REQUEST);
         }
       })

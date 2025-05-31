@@ -73,7 +73,7 @@ export class ProductsService {
       })
       .catch(() => {
         fs.unlink(fileName, (err) => {
-          console.log(err);
+          console.error(err);
         });
         throw new HttpException('Product already exists', HttpStatus.BAD_REQUEST);
       });
@@ -91,7 +91,7 @@ export class ProductsService {
       .findOne({ where: { id }, relations: ['productCategory'] })
       .catch(() => {
         fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
-          console.log(err);
+          console.error(err);
         });
         throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
       });
@@ -112,13 +112,13 @@ export class ProductsService {
       )
       .catch(() => {
         fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
-          console.log(err);
+          console.error(err);
         });
         throw new HttpException('Product updating error', HttpStatus.BAD_REQUEST);
       });
 
     fs.unlink(path.join(__dirname, '../uploads', path.parse(product.image).base), (err) => {
-      console.log(err);
+      console.error(err);
     });
 
     await this.productsCharacteristicService.updateProductCharacteristics(
@@ -149,14 +149,14 @@ export class ProductsService {
       .getRepository(Product)
       .delete({ id })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
         throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
       });
     if (deletedProduct.affected === 0)
       throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
 
     fs.unlink(path.join(__dirname, '../uploads', path.parse(product.image).base), (err) =>
-      console.log(err)
+      console.error(err)
     );
   }
 }

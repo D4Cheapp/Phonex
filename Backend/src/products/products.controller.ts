@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 
 import { diskStorage } from 'multer';
 import path, { extname } from 'path';
@@ -45,6 +45,7 @@ export class ProductsController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @RolesD([Roles.ADMIN, Roles.MANAGER])
   @UseInterceptors(
     FileInterceptor('image', {

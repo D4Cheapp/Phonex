@@ -37,7 +37,8 @@ export class AuthService {
   }
 
   async parseToken(req: ExpressRequest) {
-    const cookies = req.headers.cookie?.split('access_token=')[1];
+    const cookies = req.headers.cookie?.split('=')[1].split(';')[0];
+
     if (!cookies) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
     const user = await this.jwtService.verifyAsync(cookies, {
