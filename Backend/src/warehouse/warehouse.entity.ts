@@ -10,9 +10,9 @@ export class Warehouse {
   @Column()
   quantity: number;
 
-  @ManyToMany(() => Product)
+  @ManyToMany(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
   products: Product[];
 
-  @ManyToOne(() => Shop, (shop) => shop.id)
+  @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
   shop: Shop;
 }

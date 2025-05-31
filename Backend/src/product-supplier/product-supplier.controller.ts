@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
@@ -7,6 +7,7 @@ import { RolesD } from 'src/role/roles.decorator';
 import { ProductSupplierDto } from './product-supplier.dto';
 import { ProductSupplierService } from './product-supplier.service';
 
+@ApiTags('Product supplier')
 @Controller('product-supplier')
 export class ProductSupplierController {
   constructor(private readonly productSupplierService: ProductSupplierService) {}

@@ -33,7 +33,7 @@ export class ProductSupplierService {
   }
 
   async deleteProductSupplier(id: number) {
-    return await this.dataSource
+    await this.dataSource
       .getRepository(ProductSupplier)
       .delete({ id })
       .catch((e) => {
@@ -42,11 +42,16 @@ export class ProductSupplierService {
   }
 
   async updateProductSupplier(id: number, productSupplierDto: ProductSupplierDto) {
-    return await this.dataSource
+    await this.dataSource
       .getRepository(ProductSupplier)
       .update(id, productSupplierDto)
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
+
+    return {
+      id,
+      ...productSupplierDto,
+    };
   }
 }

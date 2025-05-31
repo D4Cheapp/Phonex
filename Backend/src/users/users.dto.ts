@@ -25,7 +25,6 @@ export class RegisterUserDto {
 
   @ApiProperty()
   @IsNumber()
-  @IsNotEmpty()
   shopId: number;
 }
 

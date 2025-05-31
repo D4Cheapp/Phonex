@@ -16,9 +16,9 @@ export class User {
   @Column({ type: 'text' })
   password: string;
 
-  @ManyToOne(() => Role, (role) => role.id)
+  @ManyToOne(() => Role, (role) => role.id, { onDelete: 'CASCADE' })
   role: Role;
 
-  @ManyToOne(() => Shop, (shop) => shop.id)
+  @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
   shop: Shop;
 }

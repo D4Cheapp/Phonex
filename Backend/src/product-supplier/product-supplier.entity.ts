@@ -14,12 +14,12 @@ export class ProductSupplier {
   @Column()
   isPrimary: boolean;
 
-  @ManyToOne(() => Shop, (shop) => shop.id)
+  @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
   shop: Shop;
 
-  @ManyToOne(() => Product, (product) => product.id)
+  @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
   product: Product;
 
-  @ManyToOne(() => Supplier, (supplier) => supplier.id)
+  @ManyToOne(() => Supplier, (supplier) => supplier.id, { onDelete: 'CASCADE' })
   supplier: Supplier;
 }
