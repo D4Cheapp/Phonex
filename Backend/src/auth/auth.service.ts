@@ -10,6 +10,40 @@ import { User } from 'src/users/users.entity';
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
+  async getTokenData(cookies: string) {
+    return await this.jwtService.verifyAsync(cookies, {
+      secret: process.env.JWT_SALT,
+    });
+  }
+
+  async createThrottleToken() {
+    const tokenPayload = {
+      failedAttempts: 1,
+      lastFailedAttempt: new Date().getTime(),
+    };
+    return await this.jwtService
+      .signAsync(tokenPayload, {
+        secret: process.env.JWT_SALT,
+      })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+  }
+
+  async updateThrottleToken(failedAttempts: number, lastFailedAttempt: number) {
+    const tokenPayload = {
+      failedAttempts,
+      lastFailedAttempt,
+    };
+    return await this.jwtService
+      .signAsync(tokenPayload, {
+        secret: process.env.JWT_SALT,
+      })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+  }
+
   async createUserToken(user: User) {
     const tokenPayload = {
       id: user.id,
