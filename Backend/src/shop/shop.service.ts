@@ -19,8 +19,8 @@ export class ShopService {
         name: shopDto.name,
         address: shopDto.address,
       })
-      .catch(() => {
-        throw new HttpException('Shop already exists', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 
@@ -28,8 +28,8 @@ export class ShopService {
     return await this.dataSource
       .getRepository(Shop)
       .find()
-      .catch(() => {
-        throw new HttpException('Shops not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 
@@ -52,8 +52,8 @@ export class ShopService {
           address: shopDto.address,
         }
       )
-      .catch(() => {
-        throw new HttpException('Shop not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     return { id: Number(id), ...shopDto };
   }
@@ -63,11 +63,8 @@ export class ShopService {
     return await this.dataSource
       .getRepository(Shop)
       .delete({ id })
-      .catch(() => {
-        throw new HttpException(
-          'Shop deletion error. Check if shop has users or products',
-          HttpStatus.BAD_REQUEST
-        );
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 }

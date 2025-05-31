@@ -22,8 +22,8 @@ export class AuthService {
       .signAsync(tokenPayload, {
         secret: process.env.JWT_SALT,
       })
-      .catch(() => {
-        throw new HttpException('Error while creating token', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 
@@ -38,7 +38,6 @@ export class AuthService {
 
   async parseToken(req: ExpressRequest) {
     const cookies = req.headers.cookie?.split('=')[1].split(';')[0];
-
     if (!cookies) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
     const user = await this.jwtService.verifyAsync(cookies, {

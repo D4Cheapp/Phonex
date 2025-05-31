@@ -18,8 +18,8 @@ export class UsersService {
     const user = await this.dataSource
       .getRepository(User)
       .findOne({ where: { id }, relations: ['role', 'shop'] })
-      .catch(() => {
-        throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (!user?.id) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
@@ -40,8 +40,8 @@ export class UsersService {
         },
         relations: ['role', 'shop'],
       })
-      .catch(() => {
-        throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (!dbUser) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
@@ -68,8 +68,8 @@ export class UsersService {
         shop: { id: registerUser.shopId },
         role: { id: registerUser.roleId },
       })
-      .catch(() => {
-        throw new HttpException('Error while creating user', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     const token = await this.authService.createUserToken(user);
     res.cookie('access_token', token);
@@ -91,16 +91,16 @@ export class UsersService {
           role: { id: updateUser.roleId },
         }
       )
-      .catch(() => {
-        throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (user.affected === 0) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
     return await this.dataSource
       .getRepository(User)
       .findOne({ where: { id }, relations: ['role', 'shop'] })
-      .catch(() => {
-        throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 }

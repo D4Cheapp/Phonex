@@ -45,8 +45,8 @@ export class ProductsService {
     const product = await this.dataSource
       .getRepository(Product)
       .findOne({ where: { id }, relations: ['productCategory'] })
-      .catch(() => {
-        throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (!product?.id) throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
 
@@ -71,11 +71,11 @@ export class ProductsService {
         price: productDto.price,
         productCategory: { id: productDto.productCategoryId },
       })
-      .catch(() => {
+      .catch((e) => {
         fs.unlink(fileName, (err) => {
           console.error(err);
         });
-        throw new HttpException('Product already exists', HttpStatus.BAD_REQUEST);
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
 
     const characteristics = await this.productsCharacteristicService.createProductCharacteristics(
@@ -89,11 +89,11 @@ export class ProductsService {
     const product = await this.dataSource
       .getRepository(Product)
       .findOne({ where: { id }, relations: ['productCategory'] })
-      .catch(() => {
+      .catch((e) => {
         fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
           console.error(err);
         });
-        throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (!product?.id) throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
 
@@ -110,11 +110,11 @@ export class ProductsService {
           productCategory: { id: productDto.productCategoryId },
         }
       )
-      .catch(() => {
+      .catch((e) => {
         fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
           console.error(err);
         });
-        throw new HttpException('Product updating error', HttpStatus.BAD_REQUEST);
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
 
     fs.unlink(path.join(__dirname, '../uploads', path.parse(product.image).base), (err) => {
@@ -129,8 +129,8 @@ export class ProductsService {
       product: await this.dataSource
         .getRepository(Product)
         .findOne({ where: { id }, relations: ['productCategory'] })
-        .catch(() => {
-          throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
+        .catch((e) => {
+          throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }),
       characteristics: await this.productsCharacteristicService.getProductCharacteristics(id),
     };
@@ -140,8 +140,8 @@ export class ProductsService {
     const product = await this.dataSource
       .getRepository(Product)
       .findOneBy({ id })
-      .catch(() => {
-        throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (!product?.id) throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
 
