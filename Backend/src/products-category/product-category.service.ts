@@ -18,8 +18,8 @@ export class ProductCategoryService {
       .save({
         name: categoryName,
       })
-      .catch(() => {
-        throw new HttpException('Category already exists', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
 
     return category;
@@ -29,8 +29,8 @@ export class ProductCategoryService {
     await this.dataSource
       .getRepository(ProductCategory)
       .delete({ id })
-      .catch(() => {
-        throw new HttpException('Category not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 
@@ -38,8 +38,8 @@ export class ProductCategoryService {
     const category = await this.dataSource
       .getRepository(ProductCategory)
       .update({ id }, { name: categoryName })
-      .catch(() => {
-        throw new HttpException('Category not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
 
     return category;

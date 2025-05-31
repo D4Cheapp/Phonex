@@ -27,8 +27,8 @@ export class ProductsCharacteristicService {
               name: data.name,
               value: data.value,
             }))
-            .catch(() => {
-              throw new HttpException('Characteristics creation failed', HttpStatus.BAD_REQUEST);
+            .catch((e) => {
+              throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
             });
         } catch (error) {
           console.error(error);
@@ -42,8 +42,8 @@ export class ProductsCharacteristicService {
     return await this.dataSource
       .getRepository(ProductCharacteristic)
       .find({ where: { product: { id: productId } } })
-      .catch(() => {
-        throw new HttpException('Characteristics not found', HttpStatus.BAD_REQUEST);
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
   }
 
@@ -62,8 +62,8 @@ export class ProductsCharacteristicService {
               { id: characteristic.id },
               { name: characteristic.name, value: characteristic.value }
             )
-            .catch(() => {
-              throw new HttpException('Characteristics update failed', HttpStatus.BAD_REQUEST);
+            .catch((e) => {
+              throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
             });
         } catch (error) {
           console.error(error);
