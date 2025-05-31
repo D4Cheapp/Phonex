@@ -1,6 +1,12 @@
 import { Shop } from 'src/shop/shop.entity';
 import { Supplier } from 'src/supplier/supplier.entity';
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { SupplyStatus } from './supply-status.entity';
 
@@ -17,4 +23,14 @@ export class Supply {
 
   @ManyToOne(() => SupplyStatus, (supplyStatus) => supplyStatus.id, { onDelete: 'CASCADE' })
   supplyStatus: SupplyStatus;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
 }
