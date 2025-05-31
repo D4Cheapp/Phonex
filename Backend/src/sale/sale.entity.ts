@@ -1,6 +1,6 @@
 import { Shop } from 'src/shop/shop.entity';
 import { User } from 'src/users/users.entity';
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Sale {
@@ -12,4 +12,7 @@ export class Sale {
 
   @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
   user: User;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  createdAt: Date;
 }
