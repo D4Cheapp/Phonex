@@ -1,18 +1,18 @@
 import { Product } from 'src/products/product.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Supply } from './supply.entity';
+import { Sale } from './sale.entity';
 
 @Entity()
-export class SupplyItem {
+export class SaleItem {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   quantity: number;
 
-  @ManyToOne(() => Supply, (supply) => supply.id, { onDelete: 'CASCADE' })
-  supply: Supply;
+  @ManyToOne(() => Sale, (sale) => sale.id, { onDelete: 'CASCADE' })
+  sale: Sale;
 
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
   product: Product;

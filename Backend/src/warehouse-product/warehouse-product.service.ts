@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
+import { SaleItem } from 'src/sale/sale-item.entity';
 import { SupplyItem } from 'src/supply/supply-item.entity';
 import { DataSource } from 'typeorm';
 
@@ -27,7 +28,7 @@ export class WarehouseProductService {
       });
   }
 
-  async updateWarehouseProduct(shopId: number, productSupplier: SupplyItem[]) {
+  async updateWarehouseProducts(shopId: number, productSupplier: SupplyItem[] | SaleItem[]) {
     await Promise.all(
       productSupplier.map(async (item) => {
         const warehouse = await this.dataSource

@@ -127,7 +127,7 @@ export class SupplyService {
         .catch((e) => {
           throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         });
-      await this.warehouseService.updateWarehouseProduct(supply?.shop.id, supplyItems);
+      await this.warehouseService.updateWarehouseProducts(supply?.shop.id, supplyItems);
     }
 
     return supply;
