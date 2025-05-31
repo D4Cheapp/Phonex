@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Response as ExpressResponse } from 'express';
 import { AuthService } from 'src/auth/auth.service';
+import { MAX_THROTTLE_REQUESTS, THROTTLE_EXPIRE_TIME } from 'src/constants/max-throttle';
 import { DataSource } from 'typeorm';
 
 import { LoginUserDto, RegisterUserDto } from './users.dto';
@@ -31,7 +32,48 @@ export class UsersService {
     if (user.affected === 0) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
   }
 
+  async checkThrottleRequest(res: ExpressResponse) {
+    const cookies = res.req.headers.cookie?.split('=')[1].split(';')[0];
+    if (!cookies) {
+      const throttleToken = await this.authService.createThrottleToken();
+      res.cookie('access_token', throttleToken, {
+        httpOnly: true,
+        secure: true,
+      });
+      return;
+    }
+
+    const tokenData = await this.authService.getTokenData(cookies);
+    if (!tokenData) return;
+
+    const isThrottleExpired =
+      new Date(tokenData.lastFailedAttempt).getTime() + THROTTLE_EXPIRE_TIME < new Date().getTime();
+    if (isThrottleExpired && tokenData.failedAttempts !== 0) {
+      const throttleToken = await this.authService.createThrottleToken();
+      res.cookie('access_token', throttleToken, {
+        httpOnly: true,
+        secure: true,
+      });
+      return;
+    }
+
+    if (tokenData.failedAttempts >= MAX_THROTTLE_REQUESTS) {
+      throw new HttpException('Too many failed attempts', HttpStatus.FORBIDDEN);
+    }
+
+    const throttleToken = await this.authService.updateThrottleToken(
+      tokenData.failedAttempts + 1,
+      new Date().getTime()
+    );
+    res.cookie('access_token', throttleToken, {
+      httpOnly: true,
+      secure: true,
+    });
+  }
+
   async login(loginUser: LoginUserDto, res: ExpressResponse) {
+    await this.checkThrottleRequest(res);
+
     const dbUser = await this.dataSource
       .getRepository(User)
       .findOne({
