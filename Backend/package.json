@@ -1,9 +1,8 @@
 {
   "name": "phonex",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Ilya Scherbakov",
   "private": true,
-  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\"",

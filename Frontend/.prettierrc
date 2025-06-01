@@ -1,7 +1,12 @@
 {
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrderCaseInsensitive": true,
   "tabWidth": 2,
   "printWidth": 100,
   "trailingComma": "es5",
   "singleQuote": true,
-  "bracketSameLine": true
+  "bracketSameLine": true,
+  "semi": true,
+  "jsxSingleQuote": false,
+  "arrowParens": "avoid"
 }
