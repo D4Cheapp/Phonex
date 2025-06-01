@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import fs from 'fs';
 import path from 'path';
+import { ProductCategory } from 'src/products-category/product-category.entity';
 import { ProductsCharacteristicService } from 'src/products-characteristic/products-characteristic.service';
-import { createPaginationData } from 'src/utils/createPaginationData';
 import { DataSource } from 'typeorm';
 import { Like } from 'typeorm';
 
@@ -19,9 +19,9 @@ export class ProductService {
   ) {}
 
   async getAllProducts(query: ProductsDto) {
-    const { page, per_page, search, category } = query;
-    const skip = page > 0 ? (page - 1) * per_page : 0;
-    const [products, count] = await this.dataSource.getRepository(Product).findAndCount({
+    const { search, category } = query;
+
+    return await this.dataSource.getRepository(Product).find({
       where: [
         search
           ? {
@@ -34,17 +34,14 @@ export class ProductService {
             }
           : {},
       ],
-      relations: ['productCategory'],
-      skip,
-      take: per_page,
+      relations: ['product_category'],
     });
-    return createPaginationData(page, per_page, count, products);
   }
 
   async getProductById(id: number) {
     const product = await this.dataSource
       .getRepository(Product)
-      .findOne({ where: { id }, relations: ['productCategory'] })
+      .findOne({ where: { id }, relations: ['product_category'] })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
@@ -61,6 +58,15 @@ export class ProductService {
   }
 
   async createProduct(productDto: ProductDto, imagePath: string) {
+    const productCategory = await this.dataSource
+      .getRepository(ProductCategory)
+      .findOneBy({
+        id: productDto.product_category_id,
+      })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+
     const fileName = path.join(__dirname, '../uploads', path.parse(imagePath).base);
     const product = await this.dataSource
       .getRepository(Product)
@@ -69,7 +75,7 @@ export class ProductService {
         description: productDto.description,
         image: `files/${path.parse(imagePath).base}`,
         price: productDto.price,
-        productCategory: { id: productDto.product_category_id },
+        product_category: { id: productDto.product_category_id },
       })
       .catch((e) => {
         fs.unlink(fileName, (err) => {

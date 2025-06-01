@@ -1,7 +1,20 @@
-export const ShopPage = () => {
+import { Category } from '@/modules/category/type';
+import { Product } from '@/modules/product/types';
+
+import { Categories } from './Categories';
+import { ShopProvider } from './context';
+import { ProductList } from './ProductList';
+
+type Props = {
+  products: Product[];
+  categories: Category[];
+};
+
+export const ShopPage = ({ products, categories }: Props) => {
   return (
-    <div>
-      <h1>Shop Page</h1>
-    </div>
+    <ShopProvider initialProducts={products}>
+      <Categories categories={categories} />
+      <ProductList />
+    </ShopProvider>
   );
 };

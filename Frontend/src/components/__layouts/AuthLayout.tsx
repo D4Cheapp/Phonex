@@ -11,7 +11,9 @@ type Props = {
 export const AuthLayout = ({ role, children }: Props) => (
   <Auth role={role}>
     <Navbar />
-    {children}
+    <section className="max-w-[1024px] pl-6 pr-6 mx-auto min-h-[calc(100vh-165px)]">
+      {children}
+    </section>
     <Footer />
   </Auth>
 );

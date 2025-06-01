@@ -14,6 +14,7 @@ import { adminRoutes, cashierRoutes, managerRoutes, Routes } from 'constants/rou
 
 import { useState } from 'react';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import AdminIcon from 'icons/admin.svg';
@@ -39,8 +40,6 @@ export const Navbar = () => {
   const handleProfileClick = () => setIsProfileOpen(prev => !prev);
 
   const handleHomeClick = () => router.push(Routes.home);
-
-  const handleLoginClick = () => router.push(Routes.login);
 
   return (
     <HeroNavbar isBordered>
@@ -76,7 +75,9 @@ export const Navbar = () => {
               <ProfileModal user={user} isOpen={isProfileOpen} onClose={handleProfileClick} />
             </>
           ) : (
-            <Button onPress={handleLoginClick}>Войти</Button>
+            <Link href={Routes.login}>
+              <Button color="primary">Войти</Button>
+            </Link>
           )}
         </NavbarItem>
       </NavbarContent>
