@@ -1,9 +1,10 @@
-import { Product } from 'src/products/product.entity';
+import { Product } from 'src/product/product.entity';
 import { Shop } from 'src/shop/shop.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -18,18 +19,20 @@ export class WarehouseProduct {
   quantity: number;
 
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'product_id' })
   product: Product;
 
   @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'shop_id' })
   shop: Shop;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updatedAt: Date;
+  updated_at: Date;
 }

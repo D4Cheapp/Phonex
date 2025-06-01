@@ -15,13 +15,13 @@ import { AuthService } from 'src/auth/auth.service';
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
-import { LoginUserDto, RegisterUserDto } from './users.dto';
-import { UsersService } from './users.service';
+import { LoginUserDto, RegisterUserDto } from './user.dto';
+import { UserService } from './user.service';
 
 @Controller('user')
-export class UsersController {
+export class UserController {
   constructor(
-    private usersService: UsersService,
+    private usersService: UserService,
     private authService: AuthService
   ) {}
 

@@ -3,6 +3,7 @@ import { Supplier } from 'src/supplier/supplier.entity';
 import {
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -16,21 +17,24 @@ export class Supply {
   id: number;
 
   @ManyToOne(() => Supplier, (supplier) => supplier.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'supplier_id' })
   supplier: Supplier;
 
   @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'shop_id' })
   shop: Shop;
 
   @ManyToOne(() => SupplyStatus, (supplyStatus) => supplyStatus.id, { onDelete: 'CASCADE' })
-  supplyStatus: SupplyStatus;
+  @JoinColumn({ name: 'supply_status_id' })
+  supply_status: SupplyStatus;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updatedAt: Date;
+  updated_at: Date;
 }

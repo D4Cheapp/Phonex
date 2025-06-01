@@ -5,11 +5,11 @@ import { AuthService } from 'src/auth/auth.service';
 import { MAX_THROTTLE_REQUESTS, THROTTLE_EXPIRE_TIME } from 'src/constants/max-throttle';
 import { DataSource } from 'typeorm';
 
-import { LoginUserDto, RegisterUserDto } from './users.dto';
-import { User } from './users.entity';
+import { LoginUserDto, RegisterUserDto } from './user.dto';
+import { User } from './user.entity';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     private dataSource: DataSource,
     private authService: AuthService
@@ -107,8 +107,8 @@ export class UsersService {
         name: registerUser.name,
         email: registerUser.email,
         password: hashPassword,
-        ...(registerUser.shopId && { shop: { id: registerUser.shopId } }),
-        role: { id: registerUser.roleId },
+        ...(registerUser.shop_id && { shop: { id: registerUser.shop_id } }),
+        role: { id: registerUser.role_id },
       })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
@@ -129,8 +129,8 @@ export class UsersService {
           name: updateUser.name,
           email: updateUser.email,
           password: hashPassword,
-          shop: { id: updateUser.shopId },
-          role: { id: updateUser.roleId },
+          shop: { id: updateUser.shop_id },
+          role: { id: updateUser.role_id },
         }
       )
       .catch((e) => {

@@ -6,26 +6,26 @@ export class SupplyDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  shopId: number;
+  shop_id: number;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  supplierId: number;
+  supplier_id: number;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  supplyStatusId: number;
+  supply_status_id: number;
 
   @ApiProperty({
     type: 'array',
     example: {
-      productId: 1,
+      product_id: 1,
       quantity: 10,
     },
   })
   @IsNumber()
   @IsNotEmpty()
-  supplyItems: { productId: number; quantity: number }[];
+  supply_items: { product_id: number; quantity: number }[];
 }

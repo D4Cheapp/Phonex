@@ -12,8 +12,8 @@ import { ProductCategory } from './products-category/product-category.entity';
 import { ProductCategoryModule } from './products-category/product-category.module';
 import { ProductCharacteristic } from './products-characteristic/product-characteristic.entity';
 import { ProductsCharacteristicModule } from './products-characteristic/products-characteristic.module';
-import { Product } from './products/product.entity';
-import { ProductsModule } from './products/products.module';
+import { Product } from './product/product.entity';
+import { ProductModule } from './product/product.module';
 import { Role } from './role/role.entity';
 import { RoleModule } from './role/role.module';
 import { SaleItem } from './sale/sale-item.entity';
@@ -27,8 +27,8 @@ import { SupplyItem } from './supply/supply-item.entity';
 import { SupplyStatus } from './supply/supply-status.entity';
 import { Supply } from './supply/supply.entity';
 import { SupplyModule } from './supply/supply.module';
-import { User } from './users/users.entity';
-import { UsersModule } from './users/users.module';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
 import { WarehouseProduct } from './warehouse-product/warehouse-product.entity';
 import { WarehouseProductModule } from './warehouse-product/warehouse-product.module';
 
@@ -58,15 +58,15 @@ import { WarehouseProductModule } from './warehouse-product/warehouse-product.mo
         Sale,
         SaleItem,
       ],
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
-    UsersModule,
+    UserModule,
     RoleModule,
     ShopModule,
     AuthModule,
     FilesModule,
-    ProductsModule,
+    ProductModule,
     ProductCategoryModule,
     ProductsCharacteristicModule,
     WarehouseProductModule,

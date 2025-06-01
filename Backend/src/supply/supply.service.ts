@@ -36,22 +36,22 @@ export class SupplyService {
     const supply = await this.dataSource
       .getRepository(Supply)
       .save({
-        shop: { id: supplyDto.shopId },
-        supplier: { id: supplyDto.supplierId },
-        supplyStatus: { id: supplyDto.supplyStatusId },
+        shop: { id: supplyDto.shop_id },
+        supplier: { id: supplyDto.supplier_id },
+        supply_status: { id: supplyDto.supply_status_id },
       })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
 
     const products = await Promise.all(
-      supplyDto.supplyItems.flatMap(
+      supplyDto.supply_items.flatMap(
         async (product) =>
           await this.dataSource.getRepository(ProductSupplier).findOne({
             where: {
-              shop: { id: supplyDto.shopId },
-              supplier: { id: supplyDto.supplierId },
-              product: { id: product.productId },
+              shop: { id: supplyDto.shop_id },
+              supplier: { id: supplyDto.supplier_id },
+              product: { id: product.product_id },
             },
           })
       )
@@ -59,7 +59,7 @@ export class SupplyService {
       .then((products) =>
         products.map((product) => ({
           id: product?.id,
-          quantity: supplyDto.supplyItems.find((item) => item.productId === product?.product?.id)
+          quantity: supplyDto.supply_items.find((item) => item.product_id === product?.product?.id)
             ?.quantity,
           price: product?.price,
         }))
@@ -101,7 +101,7 @@ export class SupplyService {
 
     await this.dataSource
       .getRepository(Supply)
-      .update(id, { supplyStatus: { id: supplyStatusId } })
+      .update(id, { supply_status: { id: supplyStatusId } })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });

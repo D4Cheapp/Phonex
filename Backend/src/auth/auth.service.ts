@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { HASH_COST } from 'src/constants/hash-cost';
-import { User } from 'src/users/users.entity';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthService {

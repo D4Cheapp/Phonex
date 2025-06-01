@@ -7,7 +7,6 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 
 const start = async () => {
-  const PORT = process.env.PORT || 4000;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
 
@@ -30,7 +29,7 @@ const start = async () => {
     },
   });
 
-  await app.listen(PORT, () => console.log(`Server started on port ${PORT ?? 3000}`));
+  await app.listen(4000, () => console.log(`Server started on port 4000`));
 };
 
 start();
