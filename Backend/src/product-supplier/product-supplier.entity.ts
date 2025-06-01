@@ -1,10 +1,11 @@
-import { Product } from 'src/products/product.entity';
+import { Product } from 'src/product/product.entity';
 import { Shop } from 'src/shop/shop.entity';
 import { Supplier } from 'src/supplier/supplier.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -19,15 +20,18 @@ export class ProductSupplier {
   price: number;
 
   @Column()
-  isPrimary: boolean;
+  is_primary: boolean;
 
   @ManyToOne(() => Shop, (shop) => shop.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'shop_id' })
   shop: Shop;
 
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'product_id' })
   product: Product;
 
   @ManyToOne(() => Supplier, (supplier) => supplier.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'supplier_id' })
   supplier: Supplier;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })

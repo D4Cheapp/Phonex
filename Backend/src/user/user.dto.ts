@@ -21,11 +21,11 @@ export class RegisterUserDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  roleId: number;
+  role_id: number;
 
   @ApiProperty()
   @IsNumber()
-  shopId: number;
+  shop_id: number;
 }
 
 export class LoginUserDto {

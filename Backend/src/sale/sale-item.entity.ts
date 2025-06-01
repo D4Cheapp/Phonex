@@ -1,5 +1,5 @@
-import { Product } from 'src/products/product.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from 'src/product/product.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Sale } from './sale.entity';
 
@@ -12,8 +12,10 @@ export class SaleItem {
   quantity: number;
 
   @ManyToOne(() => Sale, (sale) => sale.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'sale_id' })
   sale: Sale;
 
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'product_id' })
   product: Product;
 }

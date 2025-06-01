@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -26,15 +27,16 @@ export class Product {
   price: number;
 
   @ManyToOne(() => ProductCategory, (category) => category.id, { onDelete: 'CASCADE' })
-  productCategory: ProductCategory;
+  @JoinColumn({ name: 'product_category_id' })
+  product_category: ProductCategory;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updatedAt: Date;
+  updated_at: Date;
 }

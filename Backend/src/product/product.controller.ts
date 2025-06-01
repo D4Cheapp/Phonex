@@ -19,24 +19,24 @@ import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
 import { ProductDto } from './product.dto';
-import { ProductsService } from './products.service';
+import { ProductService } from './product.service';
 
-@Controller('products')
-export class ProductsController {
-  constructor(private productsService: ProductsService) {}
+@Controller('product')
+export class ProductController {
+  constructor(private productsService: ProductService) {}
 
   @Get()
   @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'perPage', required: false, type: Number })
+  @ApiQuery({ name: 'per_page', required: false, type: Number })
   @ApiQuery({ name: 'search', required: false, type: String })
   @ApiQuery({ name: 'category', required: false, type: Number })
   async getAllProducts(
     @Query('page') page: number = 1,
-    @Query('perPage') perPage: number = 10,
+    @Query('per_page') per_page: number = 10,
     @Query('search') search?: string,
     @Query('category') category?: number
   ) {
-    return await this.productsService.getAllProducts({ page, perPage, search, category });
+    return await this.productsService.getAllProducts({ page, per_page, search, category });
   }
 
   @Get(':id')

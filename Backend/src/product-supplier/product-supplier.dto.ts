@@ -11,20 +11,20 @@ export class ProductSupplierDto {
   @ApiProperty()
   @IsBoolean()
   @IsNotEmpty()
-  isPrimary: boolean;
+  is_primary: boolean;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  shopId: number;
+  shop_id: number;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  productId: number;
+  product_id: number;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  supplierId: number;
+  supplier_id: number;
 }

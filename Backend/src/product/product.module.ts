@@ -7,8 +7,8 @@ import { ProductCharacteristic } from 'src/products-characteristic/product-chara
 import { ProductsCharacteristicModule } from 'src/products-characteristic/products-characteristic.module';
 
 import { Product } from './product.entity';
-import { ProductsController } from './products.controller';
-import { ProductsService } from './products.service';
+import { ProductController } from './product.controller';
+import { ProductService } from './product.service';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { ProductsService } from './products.service';
     AuthModule,
     ProductsCharacteristicModule,
   ],
-  controllers: [ProductsController],
-  providers: [ProductsService],
+  controllers: [ProductController],
+  providers: [ProductService],
 })
-export class ProductsModule {}
+export class ProductModule {}

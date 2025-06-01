@@ -25,7 +25,7 @@ export class ProductDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  productCategoryId: number;
+  product_category_id: number;
 
   @ApiProperty({
     type: 'array',

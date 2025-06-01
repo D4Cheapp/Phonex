@@ -1,5 +1,5 @@
-import { Product } from 'src/products/product.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from 'src/product/product.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class ProductCharacteristic {
@@ -15,5 +15,6 @@ export class ProductCharacteristic {
   @ManyToOne(() => Product, (product) => product.id, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'product_id' })
   product: Product;
 }

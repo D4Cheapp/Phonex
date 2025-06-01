@@ -12,15 +12,15 @@ import { Product } from './product.entity';
 import { ProductsDto } from './products.dto';
 
 @Injectable()
-export class ProductsService {
+export class ProductService {
   constructor(
     private dataSource: DataSource,
     private productsCharacteristicService: ProductsCharacteristicService
   ) {}
 
   async getAllProducts(query: ProductsDto) {
-    const { page, perPage, search, category } = query;
-    const skip = page > 0 ? (page - 1) * perPage : 0;
+    const { page, per_page, search, category } = query;
+    const skip = page > 0 ? (page - 1) * per_page : 0;
     const [products, count] = await this.dataSource.getRepository(Product).findAndCount({
       where: [
         search
@@ -30,15 +30,15 @@ export class ProductsService {
           : {},
         category
           ? {
-              productCategory: { id: category },
+              product_category: { id: category },
             }
           : {},
       ],
       relations: ['productCategory'],
       skip,
-      take: perPage,
+      take: per_page,
     });
-    return createPaginationData(page, perPage, count, products);
+    return createPaginationData(page, per_page, count, products);
   }
 
   async getProductById(id: number) {
@@ -69,7 +69,7 @@ export class ProductsService {
         description: productDto.description,
         image: `files/${path.parse(imagePath).base}`,
         price: productDto.price,
-        productCategory: { id: productDto.productCategoryId },
+        productCategory: { id: productDto.product_category_id },
       })
       .catch((e) => {
         fs.unlink(fileName, (err) => {
@@ -107,7 +107,7 @@ export class ProductsService {
           description: productDto.description,
           image: updatedImage,
           price: productDto.price,
-          productCategory: { id: productDto.productCategoryId },
+          product_category: { id: productDto.product_category_id },
         }
       )
       .catch((e) => {

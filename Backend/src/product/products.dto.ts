@@ -5,7 +5,7 @@ export class ProductsDto {
   page: number = 1;
 
   @ApiProperty({ required: false, default: 10 })
-  perPage: number = 10;
+  per_page: number = 10;
 
   @ApiProperty({ required: false })
   search?: string;

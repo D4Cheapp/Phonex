@@ -14,11 +14,11 @@ export class ProductSupplierController {
 
   @Get()
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  @ApiQuery({ name: 'shopId', required: false, type: Number })
-  @ApiQuery({ name: 'productId', required: false, type: Number })
+  @ApiQuery({ name: 'shop_id', required: false, type: Number })
+  @ApiQuery({ name: 'product_id', required: false, type: Number })
   async getAllProductSuppliers(
-    @Query('shopId') shopId?: number,
-    @Query('productId') productId?: number
+    @Query('shop_id') shopId?: number,
+    @Query('product_id') productId?: number
   ) {
     return await this.productSupplierService.getAllProductSuppliers(shopId, productId);
   }

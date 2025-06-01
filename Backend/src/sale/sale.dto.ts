@@ -6,12 +6,12 @@ export class SaleDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  shopId: number;
+  shop_id: number;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  userId: number;
+  user_id: number;
 
   @ApiProperty({
     type: 'array',
@@ -22,5 +22,5 @@ export class SaleDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  saleItems: { productId: number; quantity: number }[];
+  sale_items: { product_id: number; quantity: number }[];
 }

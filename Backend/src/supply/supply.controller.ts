@@ -10,9 +10,9 @@ import { SupplyService } from './supply.service';
 export class SupplyController {
   constructor(private readonly supplyService: SupplyService) {}
 
-  @Get(':shopId')
+  @Get(':shop_id')
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  async getSupplyByShopId(@Param('shopId') shopId: number) {
+  async getSupplyByShopId(@Param('shop_id') shopId: number) {
     return await this.supplyService.getSupplyByShopId(shopId);
   }
 

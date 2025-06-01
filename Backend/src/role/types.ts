@@ -1,1 +1,1 @@
-export type RoleT = 'SELLER' | 'MANAGER' | 'ADMIN';
+export type RoleT = 'CASHIER' | 'MANAGER' | 'ADMIN';
