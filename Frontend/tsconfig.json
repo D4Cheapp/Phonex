@@ -30,6 +30,7 @@
       "styles/*": ["./src/styles/*"],
       "stubs/*": ["./src/stubs/*"],
       "utils/*": ["./src/utils/*"],
+      "icons/*": ["./public/icons/*"],
       "@/*": ["./src/*"]
     },
     "target": "ES2017"

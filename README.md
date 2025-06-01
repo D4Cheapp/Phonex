@@ -44,12 +44,12 @@ docker build -t phonex-frontend -f Frontend/Dockerfile .
 
 **Запустить все сервисы:**
 ```bash
-docker-compose up --build --env-file .env
+docker-compose --env-file .env up
 ```
 
 **Запуск в фоновом режиме:**
 ```bash
-docker-compose up -d --build --env-file .env
+docker-compose --env-file .env up
 ```
 
 **Остановка всех сервисов:**

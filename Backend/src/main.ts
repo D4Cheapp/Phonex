@@ -29,6 +29,11 @@ const start = async () => {
     },
   });
 
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
+
   await app.listen(4000, () => console.log(`Server started on port 4000`));
 };
 
