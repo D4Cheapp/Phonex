@@ -1,9 +1,14 @@
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider, ToastProvider } from '@heroui/react';
 
 type Props = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
 export const Providers = ({ children }: Props) => {
-    return <HeroUIProvider>{children}</HeroUIProvider>;
+  return (
+    <HeroUIProvider>
+      <ToastProvider />
+      {children}
+    </HeroUIProvider>
+  );
 };

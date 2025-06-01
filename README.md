@@ -47,11 +47,6 @@ docker build -t phonex-frontend -f Frontend/Dockerfile .
 docker-compose --env-file .env up
 ```
 
-**Запуск в фоновом режиме:**
-```bash
-docker-compose --env-file .env up
-```
-
 **Остановка всех сервисов:**
 ```bash
 docker-compose down

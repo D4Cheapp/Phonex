@@ -1,12 +1,16 @@
 'use client';
-import { FormEvent, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Button, Input } from '@heroui/react';
+
 import { login } from '@/modules/user/login';
-import EyeIcon from 'icons/eye.svg';
-import EyeHidden from 'icons/eye-hidden.svg';
+import { addToast, Button, Input } from '@heroui/react';
 import { Routes } from 'constants/routes';
+import { useForm } from 'react-hook-form';
+
+import { FormEvent, useState } from 'react';
+
 import { redirect } from 'next/navigation';
+
+import EyeHidden from 'icons/eye-hidden.svg';
+import EyeIcon from 'icons/eye.svg';
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +30,12 @@ export const LoginPage = () => {
       const user = await login(data);
       if (user) {
         redirect(Routes.home);
+      } else {
+        addToast({
+          title: 'Ошибка',
+          description: 'Неверный логин или пароль',
+          color: 'danger',
+        });
       }
     })();
   };
@@ -41,8 +51,8 @@ export const LoginPage = () => {
             classNames={{
               base: 'w-[300px]',
             }}
-            label="Электронная почта"
             variant="bordered"
+            label="Электронная почта"
             type="email"
             {...register('email')}
           />
