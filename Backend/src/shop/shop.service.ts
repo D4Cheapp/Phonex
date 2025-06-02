@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 
 import { ShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
@@ -24,10 +24,13 @@ export class ShopService {
       });
   }
 
-  async getAllShops() {
+  async getAllShops({ name, address }: { name?: string; address?: string }) {
+    const where: any = {};
+    if (name) where.name = Like(`%${name}%`);
+    if (address) where.address = Like(`%${address}%`);
     return await this.dataSource
       .getRepository(Shop)
-      .find()
+      .find({ where })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });

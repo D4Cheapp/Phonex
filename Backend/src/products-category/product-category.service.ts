@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 
 import { ProductCategory } from './product-category.entity';
 
@@ -8,8 +8,10 @@ import { ProductCategory } from './product-category.entity';
 export class ProductCategoryService {
   constructor(private dataSource: DataSource) {}
 
-  async getAllProductCategories() {
-    return this.dataSource.getRepository(ProductCategory).find();
+  async getAllProductCategories({ search }: { search?: string }) {
+    const where: any = {};
+    if (search) where.name = Like(`%${search}%`);
+    return this.dataSource.getRepository(ProductCategory).find({ where });
   }
 
   async createProductCategory(categoryName: string) {

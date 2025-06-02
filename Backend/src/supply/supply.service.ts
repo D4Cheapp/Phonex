@@ -17,6 +17,27 @@ export class SupplyService {
     private readonly warehouseService: WarehouseProductService
   ) {}
 
+  async getAllSupplies({
+    shopId,
+    supplierId,
+    supplyStatusId,
+  }: {
+    shopId?: number;
+    supplierId?: number;
+    supplyStatusId?: number;
+  }) {
+    const where: any = {};
+    if (shopId) where.shop = { id: shopId };
+    if (supplierId) where.supplier = { id: supplierId };
+    if (supplyStatusId) where.supply_status = { id: supplyStatusId };
+    return await this.dataSource
+      .getRepository(Supply)
+      .find({ where })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+  }
+
   async getSupplyByShopId(shopId: number) {
     return this.dataSource
       .getRepository(Supply)

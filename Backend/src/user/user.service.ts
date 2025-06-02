@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Response as ExpressResponse } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { MAX_THROTTLE_REQUESTS, THROTTLE_EXPIRE_TIME } from 'src/constants/max-throttle';
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 
 import { LoginUserDto, RegisterUserDto } from './user.dto';
 import { User } from './user.entity';
@@ -14,6 +14,30 @@ export class UserService {
     private dataSource: DataSource,
     private authService: AuthService
   ) {}
+
+  async getAllUsers({
+    search,
+    email,
+    shopId,
+    roleId,
+  }: {
+    search?: string;
+    email?: string;
+    shopId?: number;
+    roleId?: number;
+  }) {
+    const where: any = {};
+    if (search) where.name = Like(`%${search}%`);
+    if (email) where.email = Like(`%${email}%`);
+    if (shopId) where.shop = { id: shopId };
+    if (roleId) where.role = { id: roleId };
+    return await this.dataSource
+      .getRepository(User)
+      .find({ where })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+  }
 
   async getUserById(id: number) {
     const user = await this.dataSource

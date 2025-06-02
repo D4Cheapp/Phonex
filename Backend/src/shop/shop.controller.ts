@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
@@ -11,8 +12,10 @@ export class ShopController {
   constructor(private shopService: ShopService) {}
 
   @Get()
-  async getAllShops() {
-    return await this.shopService.getAllShops();
+  @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'address', required: false, type: String })
+  async getAllShops(@Query('name') name?: string, @Query('address') address?: string) {
+    return await this.shopService.getAllShops({ name, address });
   }
 
   @Post()

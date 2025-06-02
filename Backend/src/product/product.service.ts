@@ -26,7 +26,7 @@ export class ProductService {
     if (category) {
       where.product_category = { id: category };
     }
-    
+
     if (search) {
       where.name = Like(`%${search}%`);
     }
