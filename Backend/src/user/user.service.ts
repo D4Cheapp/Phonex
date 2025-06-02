@@ -125,7 +125,7 @@ export class UserService {
 
   async registerUser(registerUser: RegisterUserDto, res: ExpressResponse) {
     const hashPassword = await this.authService.createHashPassword(registerUser.password);
-    const user = await this.dataSource
+    return await this.dataSource
       .getRepository(User)
       .save({
         name: registerUser.name,
@@ -137,14 +137,13 @@ export class UserService {
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
-    const token = await this.authService.createUserToken(user);
-    res.cookie('access_token', token);
-
-    return user;
   }
 
   async updateUserById(id: number, updateUser: RegisterUserDto) {
-    const hashPassword = await this.authService.createHashPassword(updateUser.password);
+    const hashPassword = updateUser.password
+      ? await this.authService.createHashPassword(updateUser.password)
+      : undefined;
+
     const user = await this.dataSource
       .getRepository(User)
       .update(
@@ -152,7 +151,7 @@ export class UserService {
         {
           name: updateUser.name,
           email: updateUser.email,
-          password: hashPassword,
+          ...(updateUser.password ? { password: hashPassword } : {}),
           shop: { id: updateUser.shop_id },
           role: { id: updateUser.role_id },
         }
