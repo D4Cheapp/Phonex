@@ -13,9 +13,10 @@ type Props = {
   method: ApiMethods;
   url: string;
   body?: unknown;
+  isForm?: boolean;
 };
 
-export const request = async <T>({ method, url, body }: Props): Promise<T | null> => {
+export const request = async <T>({ method, url, body, isForm }: Props): Promise<T | null> => {
   const cookies = await getCookies();
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -27,13 +28,25 @@ export const request = async <T>({ method, url, body }: Props): Promise<T | null
           .filter(Boolean)
           .join('&')}`
       : '';
+  const requestBody =
+    body && method !== ApiMethods.GET
+      ? isForm
+        ? (body as BodyInit)
+        : JSON.stringify(camelBody)
+      : undefined;
+
+  const headers: HeadersInit = {
+    Cookie: cookies ? `access_token=${cookies}` : '',
+  };
+
+  if (!isForm) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   const data = await fetch(`${apiUrl}${url}${query}`, {
     method,
-    body: body && method !== ApiMethods.GET ? JSON.stringify(camelBody) : undefined,
-    headers: {
-      'Content-Type': 'application/json',
-      Cookie: cookies ? `access_token=${cookies}` : '',
-    },
+    body: requestBody,
+    headers,
     credentials: 'include',
   })
     .then(response => {

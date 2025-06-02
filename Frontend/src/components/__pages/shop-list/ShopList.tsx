@@ -33,6 +33,10 @@ export const ShopList = () => {
 
   return (
     <div className="flex flex-col gap-4 mt-10">
+      <div className="grid [grid-template-columns:1fr_1fr_1.5rem] max-md:hidden pl-10 pr-10 max-md:pl-5 max-md:pr-5 gap-4">
+        <p className="text-gray-500">Название</p>
+        <p className="text-gray-500">Адрес</p>
+      </div>
       {shops?.map(shop => <ShopListItem key={shop.id} shop={shop} />)}
       <ConfirmModal
         isOpen={isConfirmModalOpen}

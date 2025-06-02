@@ -43,6 +43,12 @@ export const UsersList = ({ shops }: Props) => {
 
   return (
     <div className="flex flex-col gap-4 mt-10">
+      <div className="grid [grid-template-columns:1fr_1fr_1fr_1fr_1.5rem] max-md:hidden pl-10 pr-10 max-md:pl-5 max-md:pr-5 gap-4">
+        <p className="text-gray-500">Имя</p>
+        <p className="text-gray-500">Почта</p>
+        <p className="text-gray-500">Роль</p>
+        <p className="text-gray-500">Магазин</p>
+      </div>
       {users?.map(user => <UserListItem key={user.id} user={user} />)}
       {selectedUser && (
         <EditProfileModal

@@ -7,17 +7,17 @@ import { redirect } from 'next/navigation';
 import { AuthProvider } from './context';
 
 type Props = {
-  role?: Roles;
+  roles?: Roles[];
   children: React.ReactNode;
 };
 
-export const Auth = async ({ role, children }: Props) => {
+export const Auth = async ({ roles, children }: Props) => {
   const user = await getCurrentUser();
 
-  const isInvalidRole = user && role && user.role.name !== role;
+  const isInvalidRole = user && roles && roles.length !== 0 && !roles.includes(user.role.name);
   const isNotAuthenticated = !user?.id;
 
-  if ((isNotAuthenticated || isInvalidRole) && role) {
+  if (isNotAuthenticated || isInvalidRole) {
     redirect(Routes.login);
   }
 

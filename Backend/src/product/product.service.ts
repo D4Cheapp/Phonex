@@ -90,19 +90,21 @@ export class ProductService {
     return { product, characteristics };
   }
 
-  async updateProduct(id: number, productDto: ProductDto, imagePath: string) {
+  async updateProduct(id: number, productDto: ProductDto, imagePath?: string) {
     const product = await this.dataSource
       .getRepository(Product)
-      .findOne({ where: { id }, relations: ['productCategory'] })
+      .findOne({ where: { id }, relations: ['product_category'] })
       .catch((e) => {
-        fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
-          console.error(err);
-        });
+        if (imagePath) {
+          fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
+            console.error(err);
+          });
+        }
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
     if (!product?.id) throw new HttpException('Product not found', HttpStatus.BAD_REQUEST);
 
-    const updatedImage = `files/${path.parse(imagePath).base}`;
+    const updatedImage = imagePath ? `files/${path.parse(imagePath).base}` : product.image;
     await this.dataSource
       .getRepository(Product)
       .update(
@@ -116,9 +118,11 @@ export class ProductService {
         }
       )
       .catch((e) => {
-        fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
-          console.error(err);
-        });
+        if (imagePath) {
+          fs.unlink(path.join(__dirname, '../uploads', path.parse(imagePath).base), (err) => {
+            console.error(err);
+          });
+        }
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
 
@@ -133,7 +137,7 @@ export class ProductService {
     return {
       product: await this.dataSource
         .getRepository(Product)
-        .findOne({ where: { id }, relations: ['productCategory'] })
+        .findOne({ where: { id }, relations: ['product_category'] })
         .catch((e) => {
           throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }),
