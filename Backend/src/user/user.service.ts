@@ -18,22 +18,22 @@ export class UserService {
   async getAllUsers({
     search,
     email,
-    shopId,
-    roleId,
+    shop_id,
+    role_id,
   }: {
     search?: string;
     email?: string;
-    shopId?: number;
-    roleId?: number;
+    shop_id?: number;
+    role_id?: number;
   }) {
     const where: any = {};
     if (search) where.name = Like(`%${search}%`);
     if (email) where.email = Like(`%${email}%`);
-    if (shopId) where.shop = { id: shopId };
-    if (roleId) where.role = { id: roleId };
+    if (shop_id) where.shop = { id: shop_id };
+    if (role_id) where.role = { id: role_id };
     return await this.dataSource
       .getRepository(User)
-      .find({ where })
+      .find({ where, relations: ['role', 'shop'] })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });

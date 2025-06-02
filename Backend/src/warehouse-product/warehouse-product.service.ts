@@ -23,7 +23,7 @@ export class WarehouseProductService {
 
     return await this.dataSource
       .getRepository(WarehouseProduct)
-      .find({ where })
+      .find({ where, relations: ['product', 'shop'] })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });

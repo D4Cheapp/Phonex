@@ -32,7 +32,7 @@ export class SupplyService {
     if (supplyStatusId) where.supply_status = { id: supplyStatusId };
     return await this.dataSource
       .getRepository(Supply)
-      .find({ where })
+      .find({ where, relations: ['shop', 'supplier', 'supply_status'] })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
