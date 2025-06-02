@@ -15,8 +15,8 @@ export const ShopPage = ({ products, categories }: Props) => {
   return (
     <ShopProvider initialProducts={products}>
       <h1 className="text-3xl font-bold mb-10 mt-5">Товары сети магазинов</h1>
-      <ShopCategories categories={categories} />
       <ShopSearch />
+      <ShopCategories categories={categories} />
       <ProductList />
     </ShopProvider>
   );

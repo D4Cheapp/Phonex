@@ -17,7 +17,9 @@ export const ProductCard = ({ product }: { product: Product }) => {
         <CardBody className="flex items-center justify-center box-border min-h-72 max-h-72 pl-5 pr-5 max-md:max-h-96">
           <img
             className="w-full max-h-full object-cover rounded-md"
-            src={getImageSrc(product.image)}
+            src={getImageSrc(
+              product.image instanceof File ? URL.createObjectURL(product.image) : product.image
+            )}
             alt={truncateText(product.name, 20)}
           />
         </CardBody>

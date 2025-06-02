@@ -28,10 +28,7 @@ export class ProductController {
   @Get()
   @ApiQuery({ name: 'search', required: false, type: String })
   @ApiQuery({ name: 'category', required: false, type: Number })
-  async getAllProducts(
-    @Query('search') search?: string,
-    @Query('category') category?: number
-  ) {
+  async getAllProducts(@Query('search') search?: string, @Query('category') category?: number) {
     return await this.productsService.getAllProducts({ search, category });
   }
 
@@ -78,9 +75,9 @@ export class ProductController {
   async updateProductById(
     @Param('id') id: number,
     @Body() body: ProductDto,
-    @UploadedFile() image: Express.Multer.File
+    @UploadedFile() image?: Express.Multer.File
   ) {
-    return await this.productsService.updateProduct(id, body, image.path);
+    return await this.productsService.updateProduct(id, body, image?.path);
   }
 
   @Delete(':id')

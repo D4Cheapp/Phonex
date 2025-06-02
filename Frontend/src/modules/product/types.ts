@@ -1,6 +1,6 @@
 import { Category } from '../category/type';
 
-type Characteristic = {
+export type Characteristic = {
   id: number;
   name: string;
   value: string;
@@ -11,7 +11,9 @@ export type Product = {
   name: string;
   description: string;
   price: number;
-  image: string;
+  image: string | File;
+  product_category?: Category;
+  product_category_id?: number;
   category: Category;
   characteristics: Characteristic[];
 };
