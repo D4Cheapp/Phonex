@@ -1,6 +1,6 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { Body } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
@@ -14,8 +14,9 @@ export class ProductCategoryController {
   constructor(private ProductCategoryService: ProductCategoryService) {}
 
   @Get()
-  async getAllProductCategories() {
-    return await this.ProductCategoryService.getAllProductCategories();
+  @ApiQuery({ name: 'search', required: false, type: String })
+  async getAllProductCategories(@Query('search') search?: string) {
+    return await this.ProductCategoryService.getAllProductCategories({ search });
   }
 
   @Post()

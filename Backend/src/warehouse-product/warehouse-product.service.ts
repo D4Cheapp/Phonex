@@ -10,6 +10,25 @@ import { WarehouseProduct } from './warehouse-product.entity';
 export class WarehouseProductService {
   constructor(private readonly dataSource: DataSource) {}
 
+  async getAllWarehouseProducts({ shopId, productId }: { shopId?: number; productId?: number }) {
+    const where: any = {};
+
+    if (shopId) {
+      where.shop = { id: shopId };
+    }
+
+    if (productId) {
+      where.product = { id: productId };
+    }
+
+    return await this.dataSource
+      .getRepository(WarehouseProduct)
+      .find({ where })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+  }
+
   async getShopWarehouse(id: number) {
     return await this.dataSource
       .getRepository(WarehouseProduct)

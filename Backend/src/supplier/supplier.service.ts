@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 
 import { SupplierDto } from './supplier.dto';
 import { Supplier } from './supplier.entity';
@@ -9,10 +9,14 @@ import { Supplier } from './supplier.entity';
 export class SupplierService {
   constructor(private readonly dataSource: DataSource) {}
 
-  async getAllSuppliers() {
+  async getAllSuppliers({ name, email, phone }: { name?: string; email?: string; phone?: string }) {
+    const where: any = {};
+    if (name) where.name = Like(`%${name}%`);
+    if (email) where.email = Like(`%${email}%`);
+    if (phone) where.phone = Like(`%${phone}%`);
     return await this.dataSource
       .getRepository(Supplier)
-      .find()
+      .find({ where })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });

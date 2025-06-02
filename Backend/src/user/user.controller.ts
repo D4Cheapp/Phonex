@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   Response,
 } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { AuthService } from 'src/auth/auth.service';
@@ -24,6 +26,21 @@ export class UserController {
     private usersService: UserService,
     private authService: AuthService
   ) {}
+
+  @Get()
+  @RolesD([RolesE.ADMIN])
+  @ApiQuery({ name: 'search', required: false, type: String })
+  @ApiQuery({ name: 'email', required: false, type: String })
+  @ApiQuery({ name: 'shopId', required: false, type: Number })
+  @ApiQuery({ name: 'roleId', required: false, type: Number })
+  async getAllUsers(
+    @Query('search') search?: string,
+    @Query('email') email?: string,
+    @Query('shopId') shopId?: number,
+    @Query('roleId') roleId?: number
+  ) {
+    return await this.usersService.getAllUsers({ search, email, shopId, roleId });
+  }
 
   @Get('current')
   async getCurrentUser(@Request() req: ExpressRequest) {
