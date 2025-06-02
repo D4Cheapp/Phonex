@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
+import console from 'console';
 import fs from 'fs';
 import path from 'path';
 import { ProductCategory } from 'src/products-category/product-category.entity';
@@ -20,20 +21,18 @@ export class ProductService {
 
   async getAllProducts(query: ProductsDto) {
     const { search, category } = query;
+    const where: any = {};
+
+    if (category) {
+      where.product_category = { id: category };
+    }
+    
+    if (search) {
+      where.name = Like(`%${search}%`);
+    }
 
     return await this.dataSource.getRepository(Product).find({
-      where: [
-        search
-          ? {
-              name: Like(`%${search}%`),
-            }
-          : {},
-        category
-          ? {
-              product_category: { id: category },
-            }
-          : {},
-      ],
+      where,
       relations: ['product_category'],
     });
   }
@@ -58,7 +57,7 @@ export class ProductService {
   }
 
   async createProduct(productDto: ProductDto, imagePath: string) {
-    const productCategory = await this.dataSource
+    await this.dataSource
       .getRepository(ProductCategory)
       .findOneBy({
         id: productDto.product_category_id,

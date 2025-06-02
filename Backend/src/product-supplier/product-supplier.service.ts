@@ -10,13 +10,21 @@ export class ProductSupplierService {
   constructor(private readonly dataSource: DataSource) {}
 
   async getAllProductSuppliers(shopId?: number, productId?: number) {
+    const where: any = {};
+
+    if (shopId) {
+      where.shop = { id: shopId };
+    }
+
+    if (productId) {
+      where.product = { id: productId };
+    }
+
     return await this.dataSource
       .getRepository(ProductSupplier)
       .find({
-        where: {
-          ...(shopId && { shop: { id: shopId } }),
-          ...(productId && { product: { id: productId } }),
-        },
+        where,
+        relations: ['shop', 'product'],
       })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);

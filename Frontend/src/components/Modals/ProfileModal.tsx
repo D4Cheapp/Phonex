@@ -32,24 +32,26 @@ export const ProfileModal = ({ user, isOpen, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
-        <ModalHeader>Профиль пользователя</ModalHeader>
+        <ModalHeader>
+          <p className="text-xl font-semibold">Профиль пользователя</p>
+        </ModalHeader>
         <ModalBody className="pt-5 pb-5 flex flex-col gap-8">
-          <div className="w-full flex justify-between gap-2">
-            <p className="font-semibold">Имя пользователя</p>
+          <div className="w-full flex gap-2">
+            <p className="font-semibold">Имя пользователя: </p>
             <p>{user.name}</p>
           </div>
-          <div className="w-full flex justify-between gap-2">
-            <p className="font-semibold">Электронная почта</p>
+          <div className="w-full flex gap-2">
+            <p className="font-semibold">Электронная почта: </p>
             <p>{user.email}</p>
           </div>
           {user.shop && (
-            <div className="w-full flex justify-between gap-2">
-              <p className="font-semibold">Магазин</p>
+            <div className="w-full flex gap-2">
+              <p className="font-semibold">Магазин: </p>
               <p>{user.shop.name}</p>
             </div>
           )}
-          <div className="w-full flex justify-between gap-2">
-            <p className="font-semibold">Роль</p>
+          <div className="w-full flex gap-2">
+            <p className="font-semibold">Роль: </p>
             <p>{handleRoleName(user.role.name)}</p>
           </div>
         </ModalBody>

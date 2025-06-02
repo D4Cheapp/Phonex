@@ -10,10 +10,12 @@ type Props = {
 
 export const AuthLayout = ({ role, children }: Props) => (
   <Auth role={role}>
-    <Navbar />
-    <section className="max-w-[1024px] pl-6 pr-6 mx-auto min-h-[calc(100vh-165px)]">
-      {children}
-    </section>
-    <Footer />
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <section className="max-w-[1024px] w-full flex-1 min-h-full pl-6 pr-6 mx-auto pb-16">
+        {children}
+      </section>
+      <Footer />
+    </div>
   </Auth>
 );

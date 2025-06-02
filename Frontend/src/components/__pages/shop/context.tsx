@@ -7,8 +7,10 @@ import { createContext, Dispatch, SetStateAction, useContext, useEffect, useStat
 
 type ShopContextType = {
   products: Product[];
-  categoryId?: number;
-  setCategoryId: Dispatch<SetStateAction<number | undefined>>;
+  category?: number;
+  setCategory: Dispatch<SetStateAction<number | undefined>>;
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
 };
 
 type Props = {
@@ -20,20 +22,21 @@ const ShopContext = createContext({} as ShopContextType);
 
 export const ShopProvider = ({ children, initialProducts }: Props) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [categoryId, setCategoryId] = useState<number | undefined>();
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState<number | undefined>();
 
   const fetchProducts = async () => {
-    const response = await getProducts({ category: categoryId });
+    const response = await getProducts({ category: category, search });
     setProducts([]);
     setProducts(response || []);
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId]);
+  }, [category, search]);
 
   return (
-    <ShopContext.Provider value={{ products, categoryId, setCategoryId }}>
+    <ShopContext.Provider value={{ products, category, setCategory, search, setSearch }}>
       {children}
     </ShopContext.Provider>
   );
