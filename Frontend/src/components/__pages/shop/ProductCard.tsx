@@ -1,5 +1,6 @@
 import { Product } from '@/modules/product/types';
 import { Card, CardBody, CardFooter } from '@heroui/react';
+import { Routes } from 'constants/routes';
 import { getImageSrc } from 'utils/get-image-href';
 
 import Link from 'next/link';
@@ -11,7 +12,7 @@ const truncateText = (text: string, maxLength = 30): string => {
 
 export const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Link className="min-h-80" href={`/product/${product.id}`}>
+    <Link className="min-h-80" href={`${Routes.productCreation}/${product.id}`}>
       <Card isPressable shadow="sm" className="h-full w-full pb-5">
         <CardBody className="flex items-center justify-center box-border min-h-72 max-h-72 pl-5 pr-5 max-md:max-h-96">
           <img

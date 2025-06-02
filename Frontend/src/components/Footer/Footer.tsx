@@ -7,7 +7,7 @@ export const Footer = () => {
 
   return (
     <footer className="w-full min-h-20 bg-gray-600 text-white">
-      <div className="flex max-w-[1024px] p-6 mx-auto justify-around items-center">
+      <div className="flex max-w-[1024px] p-6 mx-auto justify-between items-start">
         <p>© {new Date().getFullYear()} Phonex</p>
         {user?.shop && (
           <div className="flex flex-col gap-1 items-center">
