@@ -1,7 +1,7 @@
+import { handleRoleName } from '@/modules/user/handle-role-name';
 import { logout } from '@/modules/user/logout';
 import { User } from '@/modules/user/types';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
-import { Roles } from 'constants/roles';
 import { Routes } from 'constants/routes';
 
 import { redirect } from 'next/navigation';
@@ -13,17 +13,6 @@ type Props = {
 };
 
 export const ProfileModal = ({ user, isOpen, onClose }: Props) => {
-  const handleRoleName = (role: string) => {
-    switch (role) {
-      case Roles.ADMIN:
-        return 'Администратор';
-      case Roles.MANAGER:
-        return 'Менеджер';
-      case Roles.CASHIER:
-        return 'Кассир';
-    }
-  };
-
   const handleLogout = async () => {
     await logout();
     redirect(Routes.login);

@@ -31,15 +31,15 @@ export class UserController {
   @RolesD([RolesE.ADMIN])
   @ApiQuery({ name: 'search', required: false, type: String })
   @ApiQuery({ name: 'email', required: false, type: String })
-  @ApiQuery({ name: 'shopId', required: false, type: Number })
-  @ApiQuery({ name: 'roleId', required: false, type: Number })
+  @ApiQuery({ name: 'shop_id', required: false, type: Number })
+  @ApiQuery({ name: 'role_id', required: false, type: Number })
   async getAllUsers(
     @Query('search') search?: string,
     @Query('email') email?: string,
-    @Query('shopId') shopId?: number,
-    @Query('roleId') roleId?: number
+    @Query('shop_id') shop_id?: number,
+    @Query('role_id') role_id?: number
   ) {
-    return await this.usersService.getAllUsers({ search, email, shopId, roleId });
+    return await this.usersService.getAllUsers({ search, email, shop_id, role_id });
   }
 
   @Get('current')
