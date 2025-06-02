@@ -34,20 +34,15 @@ JWT_SALT=${JWT_SALT}
 
 **Сборка бэкенда:**
 ```bash
-docker build -t phonex-backend -f Backend/Dockerfile .
+docker build -t phonex-backend -f Backend/Dockerfile ./Backend
 ```
 
 **Сборка фронтенда:**
 ```bash
-docker build -t phonex-frontend -f Frontend/Dockerfile .
+docker build -t phonex-frontend -f Frontend/Dockerfile ./Frontend
 ```
 
 **Запустить все сервисы:**
-```bash
-docker-compose --env-file .env up
-```
-
-**Запуск в фоновом режиме:**
 ```bash
 docker-compose --env-file .env up
 ```

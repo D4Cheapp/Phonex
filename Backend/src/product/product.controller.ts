@@ -26,17 +26,13 @@ export class ProductController {
   constructor(private productsService: ProductService) {}
 
   @Get()
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'per_page', required: false, type: Number })
   @ApiQuery({ name: 'search', required: false, type: String })
   @ApiQuery({ name: 'category', required: false, type: Number })
   async getAllProducts(
-    @Query('page') page: number = 1,
-    @Query('per_page') per_page: number = 10,
     @Query('search') search?: string,
     @Query('category') category?: number
   ) {
-    return await this.productsService.getAllProducts({ page, per_page, search, category });
+    return await this.productsService.getAllProducts({ search, category });
   }
 
   @Get(':id')

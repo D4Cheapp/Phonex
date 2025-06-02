@@ -18,9 +18,17 @@ export const request = async <T>({ method, url, body }: Props): Promise<T | null
   const cookies = await getCookies();
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const data = await fetch(`${apiUrl}${url}`, {
+  const camelBody = camelToSnake(body as Record<string, string>);
+  const query =
+    body && method === ApiMethods.GET
+      ? `?${Object.entries(camelBody as Record<string, string>)
+          .map(([key, value]) => (value !== undefined ? `${key}=${value}` : undefined))
+          .filter(Boolean)
+          .join('&')}`
+      : '';
+  const data = await fetch(`${apiUrl}${url}${query}`, {
     method,
-    body: body ? JSON.stringify(camelToSnake(body)) : undefined,
+    body: body && method !== ApiMethods.GET ? JSON.stringify(camelBody) : undefined,
     headers: {
       'Content-Type': 'application/json',
       Cookie: cookies ? `access_token=${cookies}` : '',
