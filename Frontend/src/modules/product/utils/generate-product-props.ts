@@ -1,6 +1,6 @@
 import { Product } from '../types';
 
-export const generateProductProps = (product: Product) => {
+export const generateProductProps = (product: Product, isEditing?: boolean) => {
   const formData = new FormData();
 
   formData.append('name', product.name);
@@ -14,7 +14,7 @@ export const generateProductProps = (product: Product) => {
 
   if (product.characteristics.length > 0) {
     product.characteristics.forEach((characteristic, index) => {
-      if (characteristic.id) {
+      if (isEditing && characteristic.id) {
         formData.append(`characteristics[${index}][id]`, characteristic.id.toString());
       }
       formData.append(`characteristics[${index}][name]`, characteristic.name);

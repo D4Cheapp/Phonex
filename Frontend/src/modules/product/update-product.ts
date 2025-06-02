@@ -8,5 +8,5 @@ export const updateProduct = async (id: string, product: Product) =>
     method: ApiMethods.PATCH,
     url: `/product/${id}`,
     isForm: true,
-    body: generateProductProps(product),
+    body: generateProductProps(product, true),
   });

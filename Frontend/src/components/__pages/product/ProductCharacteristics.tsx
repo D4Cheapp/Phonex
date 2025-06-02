@@ -34,6 +34,32 @@ export const ProductCharacteristics = () => {
     setCharacteristicValue('');
   };
 
+  const handleUpdateCharacteristic = ({
+    id,
+    name,
+    value,
+  }: {
+    id: number;
+    name?: string;
+    value?: string;
+  }) => {
+    setProduct(product =>
+      product?.characteristics
+        ? {
+            ...product,
+            characteristics: product.characteristics.map(characteristic =>
+              characteristic.id === id
+                ? { ...characteristic, ...(name && { name }), ...(value && { value }) }
+                : characteristic
+            ),
+          }
+        : product
+    );
+
+    setCharacteristicName('');
+    setCharacteristicValue('');
+  };
+
   return (
     <div className="w-full flex flex-col gap-5 max-md:w-full">
       <h1 className="text-2xl font-bold mb-10">Характеристики</h1>
@@ -46,9 +72,40 @@ export const ProductCharacteristics = () => {
         {product?.characteristics &&
           product?.characteristics.map(characteristic => (
             <Fragment key={characteristic.id}>
-              <p>{characteristic.name}</p>
-              <p>{characteristic.value}</p>
-              <Divider className="w-full col-span-full" />
+              {isCreating || isEditable ? (
+                <>
+                  <Input
+                    classNames={{
+                      base: 'w-full',
+                    }}
+                    label="Название"
+                    variant="bordered"
+                    size="lg"
+                    value={characteristic.name}
+                    onChange={e =>
+                      handleUpdateCharacteristic({ id: characteristic.id, name: e.target.value })
+                    }
+                  />
+                  <Input
+                    classNames={{
+                      base: 'w-full',
+                    }}
+                    label="Значение"
+                    variant="bordered"
+                    size="lg"
+                    value={characteristic.value}
+                    onChange={e =>
+                      handleUpdateCharacteristic({ id: characteristic.id, value: e.target.value })
+                    }
+                  />
+                </>
+              ) : (
+                <>
+                  <p>{characteristic.name}</p>
+                  <p>{characteristic.value}</p>
+                  <Divider className="w-full col-span-full" />
+                </>
+              )}
             </Fragment>
           ))}
         {isCreating && (
