@@ -13,10 +13,12 @@ export const AddSupplierButton = () => {
       <Button color="primary" variant="bordered" onPress={() => setIsAddSupplierModalOpen(true)}>
         Добавить поставщика
       </Button>
-      <SupplierModal
-        isOpen={isAddSupplierModalOpen}
-        onClose={() => setIsAddSupplierModalOpen(false)}
-      />
+      {isAddSupplierModalOpen && (
+        <SupplierModal
+          isOpen={isAddSupplierModalOpen}
+          onClose={() => setIsAddSupplierModalOpen(false)}
+        />
+      )}
     </>
   );
 };

@@ -1,15 +1,25 @@
-import { Controller, Delete, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
+import { CreateWarehouseProductDto } from './warehouse-product.dto';
+import { WarehouseProduct } from './warehouse-product.entity';
 import { WarehouseProductService } from './warehouse-product.service';
 
 @ApiTags('Warehouse product')
 @Controller('warehouse-product')
 export class WarehouseProductController {
   constructor(private readonly warehouseService: WarehouseProductService) {}
+
+  @Post()
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
+  async createWarehouseProduct(
+    @Body() createDto: CreateWarehouseProductDto
+  ): Promise<WarehouseProduct> {
+    return await this.warehouseService.createWarehouseProduct(createDto);
+  }
 
   @Get()
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])

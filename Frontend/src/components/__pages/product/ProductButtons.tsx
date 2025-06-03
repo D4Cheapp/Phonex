@@ -42,13 +42,15 @@ export const ProductButtons = () => {
           onPress={() => setIsConfirmOpen(true)}>
           Удалить
         </Button>
-        <ConfirmModal
-          title="Удаление продукта"
-          description="Вы уверены, что хотите удалить этот продукт?"
-          isOpen={isConfirmOpen}
-          onClose={() => setIsConfirmOpen(false)}
-          onConfirm={onDelete}
-        />
+        {isConfirmOpen && (
+          <ConfirmModal
+            title="Удаление продукта"
+            description="Вы уверены, что хотите удалить этот продукт?"
+            isOpen={isConfirmOpen}
+            onClose={() => setIsConfirmOpen(false)}
+            onConfirm={onDelete}
+          />
+        )}
       </div>
     )
   );

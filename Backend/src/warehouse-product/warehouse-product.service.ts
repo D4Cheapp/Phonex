@@ -4,6 +4,7 @@ import { SaleItem } from 'src/sale/sale-item.entity';
 import { SupplyItem } from 'src/supply/supply-item.entity';
 import { DataSource } from 'typeorm';
 
+import { CreateWarehouseProductDto } from './warehouse-product.dto';
 import { WarehouseProduct } from './warehouse-product.entity';
 
 @Injectable()
@@ -42,6 +43,19 @@ export class WarehouseProductService {
     await this.dataSource
       .getRepository(WarehouseProduct)
       .delete({ id })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+  }
+
+  async createWarehouseProduct(createDto: CreateWarehouseProductDto): Promise<WarehouseProduct> {
+    return await this.dataSource
+      .getRepository(WarehouseProduct)
+      .save({
+        product: { id: createDto.product_id },
+        shop: { id: createDto.shop_id },
+        quantity: 0,
+      })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
