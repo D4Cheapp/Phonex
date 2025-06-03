@@ -12,15 +12,17 @@ import { ProductSupplierService } from './product-supplier.service';
 export class ProductSupplierController {
   constructor(private readonly productSupplierService: ProductSupplierService) {}
 
+  @Get(':id')
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
+  async getProductSupplierById(@Param('id') id: number) {
+    return await this.productSupplierService.getProductSupplierById(id);
+  }
+
   @Get()
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  @ApiQuery({ name: 'shop_id', required: false, type: Number })
-  @ApiQuery({ name: 'product_id', required: false, type: Number })
-  async getAllProductSuppliers(
-    @Query('shop_id') shopId?: number,
-    @Query('product_id') productId?: number
-  ) {
-    return await this.productSupplierService.getAllProductSuppliers(shopId, productId);
+  @ApiQuery({ name: 'supplier_id', required: false, type: Number })
+  async getAllProductSuppliers(@Query('supplier_id') supplierId?: number) {
+    return await this.productSupplierService.getAllProductSuppliers(supplierId);
   }
 
   @Post()

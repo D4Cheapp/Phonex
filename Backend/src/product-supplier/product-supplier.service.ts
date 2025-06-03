@@ -9,15 +9,29 @@ import { ProductSupplier } from './product-supplier.entity';
 export class ProductSupplierService {
   constructor(private readonly dataSource: DataSource) {}
 
-  async getAllProductSuppliers(shopId?: number, productId?: number) {
-    const where: any = {};
+  async getProductSupplierById(id: number) {
+    const productSupplier = await this.dataSource
+      .getRepository(ProductSupplier)
+      .findOne({
+        where: { id },
+        relations: ['shop', 'product', 'supplier'],
+      })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
 
-    if (shopId) {
-      where.shop = { id: shopId };
+    if (!productSupplier) {
+      throw new HttpException('Product supplier not found', HttpStatus.NOT_FOUND);
     }
 
-    if (productId) {
-      where.product = { id: productId };
+    return productSupplier;
+  }
+
+  async getAllProductSuppliers(supplierId?: number) {
+    const where: any = {};
+
+    if (supplierId) {
+      where.supplier = { id: supplierId };
     }
 
     return await this.dataSource
@@ -32,12 +46,23 @@ export class ProductSupplierService {
   }
 
   async createProductSupplier(productSupplierDto: ProductSupplierDto) {
-    return await this.dataSource
+    const { shop_id, product_id, supplier_id } = productSupplierDto;
+
+    const productSupplier = await this.dataSource
       .getRepository(ProductSupplier)
-      .save(productSupplierDto)
+      .save({
+        price: productSupplierDto.price,
+        is_primary: productSupplierDto.is_primary,
+        shop: { id: shop_id },
+        product: { id: product_id },
+        supplier: { id: supplier_id },
+      })
       .catch((e) => {
+        console.log(e);
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
+
+    return productSupplier;
   }
 
   async deleteProductSupplier(id: number) {
@@ -50,16 +75,18 @@ export class ProductSupplierService {
   }
 
   async updateProductSupplier(id: number, productSupplierDto: ProductSupplierDto) {
-    await this.dataSource
-      .getRepository(ProductSupplier)
-      .update(id, productSupplierDto)
-      .catch((e) => {
-        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
-      });
+    await this.getProductSupplierById(id);
 
-    return {
-      id,
-      ...productSupplierDto,
-    };
+    const { shop_id, product_id, supplier_id, ...rest } = productSupplierDto;
+
+    const updateData: any = { ...rest };
+
+    if (shop_id) updateData.shop = { id: shop_id };
+    if (product_id) updateData.product = { id: product_id };
+    if (supplier_id) updateData.supplier = { id: supplier_id };
+
+    await this.dataSource.getRepository(ProductSupplier).update(id, updateData);
+
+    return this.getProductSupplierById(id);
   }
 }

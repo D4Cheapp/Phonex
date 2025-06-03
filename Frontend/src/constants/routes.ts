@@ -6,6 +6,7 @@ export enum Routes {
   categories = '/categories',
   warehouse = '/warehouse',
   suppliers = '/suppliers',
+  productSuppliers = '/product-supplier',
   supplies = '/supplies',
   users = '/users',
   shops = '/shops',

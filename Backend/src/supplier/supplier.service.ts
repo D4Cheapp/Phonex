@@ -9,6 +9,21 @@ import { Supplier } from './supplier.entity';
 export class SupplierService {
   constructor(private readonly dataSource: DataSource) {}
 
+  async getSupplierById(id: number) {
+    const supplier = await this.dataSource
+      .getRepository(Supplier)
+      .findOne({ where: { id } })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+
+    if (!supplier) {
+      throw new HttpException('Supplier not found', HttpStatus.NOT_FOUND);
+    }
+
+    return supplier;
+  }
+
   async getAllSuppliers({ name, email, phone }: { name?: string; email?: string; phone?: string }) {
     const where: any = {};
     if (name) where.name = Like(`%${name}%`);

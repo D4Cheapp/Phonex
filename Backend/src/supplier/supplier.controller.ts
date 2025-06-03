@@ -11,6 +11,12 @@ import { SupplierService } from './supplier.service';
 export class SupplierController {
   constructor(private readonly supplierService: SupplierService) {}
 
+  @Get(':id')
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
+  async getSupplierById(@Param('id') id: number) {
+    return await this.supplierService.getSupplierById(id);
+  }
+
   @Get()
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
   @ApiQuery({ name: 'name', required: false, type: String })

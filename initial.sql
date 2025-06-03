@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS product (
   product_category_id INTEGER,
   created_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_product_category FOREIGN KEY (product_category_id) REFERENCES product_category (id) ON DELETE CASCADE
+  FOREIGN KEY (product_category_id) REFERENCES product_category (id) ON DELETE CASCADE,
 );
 
 CREATE TABLE IF NOT EXISTS "user" (
@@ -92,7 +92,8 @@ CREATE TABLE IF NOT EXISTS product_supplier (
   updated_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (shop_id) REFERENCES shop (id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE,
-  FOREIGN KEY (supplier_id) REFERENCES supplier (id) ON DELETE CASCADE
+  FOREIGN KEY (supplier_id) REFERENCES supplier (id) ON DELETE CASCADE,
+  UNIQUE (product_id, supplier_id)
 );
 
 CREATE TABLE IF NOT EXISTS product_characteristic (
