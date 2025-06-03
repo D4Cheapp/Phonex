@@ -49,7 +49,8 @@ export const LoginPage = () => {
         <div className="flex flex-col gap-3">
           <Input
             classNames={{
-              base: 'w-[300px]',
+              mainWrapper: 'w-[300px]',
+              inputWrapper: 'border-gray-400',
             }}
             variant="bordered"
             label="Электронная почта"
@@ -59,6 +60,7 @@ export const LoginPage = () => {
           <Input
             classNames={{
               base: 'w-[300px]',
+              inputWrapper: 'border-gray-400',
             }}
             variant="bordered"
             label="Пароль"

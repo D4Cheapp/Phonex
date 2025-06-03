@@ -59,6 +59,8 @@ export const UsersList = ({ shops }: Props) => {
         />
       )}
       <ConfirmModal
+        title="Удаление пользователя"
+        description="Вы уверены, что хотите удалить этого пользователя?"
         isOpen={isConfirmModalOpen}
         onClose={handleConfirmModalClose}
         onConfirm={handleConfirmModalConfirm}
