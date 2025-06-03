@@ -38,13 +38,15 @@ export const ShopList = () => {
         <p className="text-gray-500">Адрес</p>
       </div>
       {shops?.map(shop => <ShopListItem key={shop.id} shop={shop} />)}
-      <ConfirmModal
-        title="Удаление магазина"
-        description="Вы уверены, что хотите удалить этот магазин?"
-        isOpen={isConfirmModalOpen}
-        onClose={handleConfirmModalClose}
-        onConfirm={handleConfirmModalConfirm}
-      />
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          title="Удаление магазина"
+          description="Вы уверены, что хотите удалить этот магазин?"
+          isOpen={isConfirmModalOpen}
+          onClose={handleConfirmModalClose}
+          onConfirm={handleConfirmModalConfirm}
+        />
+      )}
       {selectedShop && (
         <ShopModal
           isOpen={isEditShopModalOpen}

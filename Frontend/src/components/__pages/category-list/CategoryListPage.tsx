@@ -43,25 +43,31 @@ const CategoryListPageContent = () => {
       </div>
       <CategoriesFilter />
       <CategoryList />
-      <CategoryModal
-        isOpen={isAddCategoryModalOpen}
-        onClose={() => setIsAddCategoryModalOpen(false)}
-        onSuccess={fetchCategories}
-      />
+      {isAddCategoryModalOpen && (
+        <CategoryModal
+          isOpen={isAddCategoryModalOpen}
+          onClose={() => setIsAddCategoryModalOpen(false)}
+          onSuccess={fetchCategories}
+        />
+      )}
 
-      <CategoryModal
-        category={selectedCategory}
-        isOpen={isEditCategoryModalOpen}
-        onClose={() => setIsEditCategoryModalOpen(false)}
-        onSuccess={fetchCategories}
-      />
-      <ConfirmModal
-        isOpen={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={handleDeleteConfirm}
-        title="Удаление категории"
-        description={`Вы уверены, что хотите удалить категорию "${selectedCategory?.name}"?`}
-      />
+      {isEditCategoryModalOpen && (
+        <CategoryModal
+          category={selectedCategory}
+          isOpen={isEditCategoryModalOpen}
+          onClose={() => setIsEditCategoryModalOpen(false)}
+          onSuccess={fetchCategories}
+        />
+      )}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleDeleteConfirm}
+          title="Удаление категории"
+          description={`Вы уверены, что хотите удалить категорию "${selectedCategory?.name}"?`}
+        />
+      )}
     </>
   );
 };

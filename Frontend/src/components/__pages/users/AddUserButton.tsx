@@ -18,11 +18,13 @@ export const AddUserButton = ({ shops }: Props) => {
       <Button color="primary" variant="bordered" onPress={() => setIsAddUserModalOpen(true)}>
         Добавить пользователя
       </Button>
-      <EditProfileModal
-        isOpen={isAddUserModalOpen}
-        onClose={() => setIsAddUserModalOpen(false)}
-        shops={shops}
-      />
+      {isAddUserModalOpen && (
+        <EditProfileModal
+          isOpen={isAddUserModalOpen}
+          onClose={() => setIsAddUserModalOpen(false)}
+          shops={shops}
+        />
+      )}
     </>
   );
 };
