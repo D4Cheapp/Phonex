@@ -33,8 +33,6 @@ export const SaleForm = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleSubmit(async (data: FormData) => {
-      console.log(data);
-
       if (!data.shopId || !data.products.length) return;
 
       try {
@@ -54,12 +52,12 @@ export const SaleForm = () => {
       <h2 className="text-2xl font-semibold">Новая продажа</h2>
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
         <div className="grid gap-4">
-          <Select
-            label="Магазин"
-            variant="bordered"
-            {...register('shopId')}
-            onChange={e => setSelectedShopId(e.target.value)}>
-            {shops?.map(shop => <SelectItem key={shop.id}>{shop.name}</SelectItem>)}
+          <Select label="Магазин" variant="bordered" {...register('shopId')}>
+            {shops?.map(shop => (
+              <SelectItem key={shop.id} onPress={() => setSelectedShopId(shop.id)}>
+                {shop.name}
+              </SelectItem>
+            ))}
           </Select>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">

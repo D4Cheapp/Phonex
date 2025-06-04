@@ -1,5 +1,13 @@
+'use client';
+
 import { Category } from '@/modules/category/type';
 import { Product } from '@/modules/product/types';
+import { Button } from '@heroui/react';
+import { useAuthContext } from 'components/Auth/context';
+import { Roles } from 'constants/roles';
+import { Routes } from 'constants/routes';
+
+import { redirect } from 'next/navigation';
 
 import { ShopProvider } from './context';
 import { ProductList } from './ProductList';
@@ -12,9 +20,18 @@ type Props = {
 };
 
 export const ShopPage = ({ products, categories }: Props) => {
+  const { user } = useAuthContext();
+
   return (
     <ShopProvider initialProducts={products}>
-      <h1 className="text-3xl font-bold mb-10 mt-5">Товары сети магазинов</h1>
+      <div className="flex justify-between items-start gap-5 mb-10 mt-10">
+        <h1 className="text-3xl font-bold">Товары сети магазинов</h1>
+        {(user?.role.name === Roles.ADMIN || user?.role.name === Roles.MANAGER) && (
+          <Button color="primary" onPress={() => redirect(Routes.productCreation)}>
+            Добавить товар
+          </Button>
+        )}
+      </div>
       <ShopSearch />
       <ShopCategories categories={categories} />
       <ProductList />

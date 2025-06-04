@@ -46,7 +46,7 @@ export class SaleService {
     );
 
     await this.warehouseProductService
-      .updateWarehouseProducts(saleData.shop_id, saleItems)
+      .updateWarehouseProducts(saleData.shop_id, saleItems, true)
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
