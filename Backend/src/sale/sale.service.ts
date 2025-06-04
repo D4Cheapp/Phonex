@@ -17,7 +17,7 @@ export class SaleService {
   async getShopSales(shopId: number) {
     return await this.dataSource
       .getRepository(Sale)
-      .find({ where: { shop: { id: shopId } } })
+      .find({ where: { shop: { id: shopId } }, relations: ['user', 'shop'] })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
