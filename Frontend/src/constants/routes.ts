@@ -15,7 +15,6 @@ export enum Routes {
 export const cashierRoutes = [{ label: 'Продажи', href: Routes.sales }];
 
 export const managerRoutes = [
-  { label: 'Добавление продукта', href: Routes.productCreation },
   { label: 'Управление категориями', href: Routes.categories },
   { label: 'Управление поставщиками', href: Routes.suppliers },
   { label: 'Управление складом', href: Routes.warehouse },

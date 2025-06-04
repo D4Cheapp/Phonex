@@ -61,7 +61,11 @@ export class WarehouseProductService {
       });
   }
 
-  async updateWarehouseProducts(shopId: number, productSupplier: SupplyItem[] | SaleItem[]) {
+  async updateWarehouseProducts(
+    shopId: number,
+    productSupplier: SupplyItem[] | SaleItem[],
+    isSale?: boolean
+  ) {
     await Promise.all(
       productSupplier.map(async (item) => {
         const warehouse = await this.dataSource
@@ -80,7 +84,10 @@ export class WarehouseProductService {
 
         return await this.dataSource
           .getRepository(WarehouseProduct)
-          .update({ id: warehouse.id }, { quantity: warehouse.quantity + item.quantity })
+          .update(
+            { id: warehouse.id },
+            { quantity: warehouse.quantity + (isSale ? -item.quantity : item.quantity) }
+          )
           .catch((e) => {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
           });
