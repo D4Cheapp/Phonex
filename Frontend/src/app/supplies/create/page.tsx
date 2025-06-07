@@ -6,7 +6,7 @@ const Page = async () => {
   const shops = await getShopList({});
   const products = await getProducts({});
 
-  return <SupplyForm isCreating shops={shops || []} products={products || []} />;
+  return <SupplyForm isCreating shops={shops || []} initialProducts={products || []} />;
 };
 
 export default Page;

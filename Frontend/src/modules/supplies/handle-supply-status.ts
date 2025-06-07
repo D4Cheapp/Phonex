@@ -2,9 +2,9 @@ export const handleSupplyStatus = (status: string) => {
   switch (status) {
     case 'PENDING':
       return 'В обработке';
-    case 'COMPLETED':
+    case 'ACCEPTED':
       return 'Завершен';
-    case 'CANCELLED':
+    case 'REJECTED':
       return 'Отменен';
   }
 };

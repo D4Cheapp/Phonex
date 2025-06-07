@@ -18,8 +18,8 @@ export type Supply = {
 };
 
 export type SupplyItem = {
-  id: string;
-  supply: Supply;
+  id?: string;
+  supply?: Supply;
   product: Product;
   quantity: number;
 };

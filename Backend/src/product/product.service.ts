@@ -5,9 +5,11 @@ import fs from 'fs';
 import path from 'path';
 import { ProductCategory } from 'src/products-category/product-category.entity';
 import { ProductsCharacteristicService } from 'src/products-characteristic/products-characteristic.service';
+import { Supplier } from 'src/supplier/supplier.entity';
 import { DataSource } from 'typeorm';
 import { Like } from 'typeorm';
 
+import { ProductSupplier } from '../product-supplier/product-supplier.entity';
 import { ProductDto } from './product.dto';
 import { Product } from './product.entity';
 import { ProductsDto } from './products.dto';
@@ -54,6 +56,48 @@ export class ProductService {
       ...product,
       characteristics,
     };
+  }
+
+  async getAllProductsOfSupplier(productId: number, shopId: number) {
+    const productSuppliers = await this.dataSource.getRepository(ProductSupplier).find({
+      where: {
+        product: { id: productId },
+        shop: { id: shopId },
+      },
+    });
+
+    if (productSuppliers.length === 0) {
+      throw new HttpException('Supplier not found', HttpStatus.NOT_FOUND);
+    }
+
+    const primarySupplier = productSuppliers.find((supplier) => supplier.is_primary);
+    const supplier = primarySupplier?.id ? primarySupplier : productSuppliers[0];
+
+    const supplierProducts = await this.dataSource.getRepository(ProductSupplier).find({
+      where: {
+        supplier: { id: supplier.id },
+      },
+      relations: ['product'],
+    });
+
+    const products = await Promise.all(
+      supplierProducts.map(async (productSupplier) => {
+        const product = await this.dataSource.getRepository(Product).findOne({
+          where: {
+            id: productSupplier.product.id,
+          },
+        });
+        return { ...product, price: primarySupplier?.price };
+      })
+    );
+
+    const supplierProfile = await this.dataSource.getRepository(Supplier).findOne({
+      where: {
+        id: supplier.id,
+      },
+    });
+
+    return { supplier: supplierProfile, products };
   }
 
   async createProduct(productDto: ProductDto, imagePath: string) {

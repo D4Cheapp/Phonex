@@ -2,8 +2,17 @@ import { ApiMethods, request } from 'utils/request';
 
 import { Supply } from './types';
 
-export const updateSupply = async (id: string) =>
+type Props = {
+  id: string;
+  supplyStatusId: string;
+};
+
+export const updateSupply = async ({ id, supplyStatusId }: Props) =>
   request<Supply>({
-    method: ApiMethods.PUT,
-    url: `/supply/${id}`,
+    method: ApiMethods.PATCH,
+    url: `/supply`,
+    body: {
+      supply_id: id,
+      supply_status_id: supplyStatusId,
+    },
   });

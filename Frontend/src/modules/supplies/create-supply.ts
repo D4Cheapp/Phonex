@@ -11,12 +11,15 @@ type Props = {
 
 export const createSupply = async ({ shopId, supplierId, supplyStatusId, supplyItems }: Props) =>
   request<Supply>({
-    method: ApiMethods.PATCH,
+    method: ApiMethods.POST,
     url: '/supply',
     body: {
       shop_id: shopId,
       supplier_id: supplierId,
       supply_status_id: supplyStatusId,
-      supply_items: supplyItems,
+      supply_items: supplyItems.map(item => ({
+        product_id: item.product.id,
+        quantity: item.quantity,
+      })),
     },
   });

@@ -31,3 +31,15 @@ export class SupplyDto {
   @IsNotEmpty()
   supply_items: { product_id: number; quantity: number }[];
 }
+
+export class ChangeSupplyStatusDto {
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  supply_id: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  supply_status_id: number;
+}

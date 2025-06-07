@@ -38,7 +38,7 @@ export class SupplyService {
   async getSupplyById(id: number) {
     const supply = await this.dataSource
       .getRepository(Supply)
-      .find({
+      .findOne({
         where: {
           id,
         },
@@ -61,7 +61,8 @@ export class SupplyService {
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
-    return { supply, supplyItems };
+
+    return { ...supply, supplyItems };
   }
 
   async createSupply(supplyDto: SupplyDto) {
@@ -123,6 +124,7 @@ export class SupplyService {
         where: {
           id,
         },
+        relations: ['shop'],
       })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
@@ -150,10 +152,7 @@ export class SupplyService {
           where: {
             supply: { id },
           },
-          relations: {
-            product: true,
-            supply: true,
-          },
+          relations: ['product', 'supply'],
         })
         .catch((e) => {
           throw new HttpException(e.message, HttpStatus.BAD_REQUEST);

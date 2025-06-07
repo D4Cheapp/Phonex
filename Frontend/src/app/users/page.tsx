@@ -5,7 +5,7 @@ import { UsersPage } from 'pages/users/UserPage';
 const Page = async () => {
   const userList = await getUserList({});
   const shops = await getShopList({});
-  return <UsersPage users={userList} shops={shops} />;
+  return <UsersPage users={userList || []} shops={shops || []} />;
 };
 
 export default Page;
