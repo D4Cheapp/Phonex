@@ -4,7 +4,7 @@ import { Supplier } from '@/modules/suppliers/types';
 import { Button } from '@heroui/react';
 import { Routes } from 'constants/routes';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import DeleteIcon from 'icons/delete.svg';
 
@@ -17,8 +17,10 @@ type Props = {
 export const SupplierListItem = ({ supplier }: Props) => {
   const { setSelectedSupplier, setIsConfirmModalOpen } = useSupplierListContext();
 
+  const { push } = useRouter();
+
   const handleSelectSupplier = () => {
-    redirect(Routes.productSuppliers + `/${supplier.id}`);
+    push(Routes.productSuppliers + `/${supplier.id}`);
   };
 
   const handleDeleteSupplier = (e: React.MouseEvent) => {

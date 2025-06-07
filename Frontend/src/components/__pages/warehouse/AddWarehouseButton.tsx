@@ -11,10 +11,7 @@ export const AddWarehouseButton = () => {
 
   return (
     <>
-      <Button
-        color="primary"
-        variant="bordered"
-        onPress={() => setIsAddWarehouseProductModalOpen(true)}>
+      <Button color="primary" onPress={() => setIsAddWarehouseProductModalOpen(true)}>
         Добавить позицию на склад
       </Button>
       {isAddWarehouseProductModalOpen && (

@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS product (
   product_category_id INTEGER,
   created_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (product_category_id) REFERENCES product_category (id) ON DELETE CASCADE,
+  FOREIGN KEY (product_category_id) REFERENCES product_category (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "user" (

@@ -30,16 +30,16 @@ export const Navbar = () => {
 
   const { user } = useAuthContext();
 
+  const { push } = useRouter();
+
   const isAdminAccess = !!user?.id && user.role.name === Roles.ADMIN;
   const isManagerAccess = !!user?.id && (user.role.name === Roles.MANAGER || isAdminAccess);
   const isCashierAccess =
     !!user?.id && (user.role.name === Roles.CASHIER || isAdminAccess || isManagerAccess);
 
-  const router = useRouter();
-
   const handleProfileClick = () => setIsProfileOpen(prev => !prev);
 
-  const handleHomeClick = () => router.push(Routes.home);
+  const handleHomeClick = () => push(Routes.home);
 
   return (
     <HeroNavbar isBordered>

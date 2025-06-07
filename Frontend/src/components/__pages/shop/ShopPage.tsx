@@ -7,7 +7,7 @@ import { useAuthContext } from 'components/Auth/context';
 import { Roles } from 'constants/roles';
 import { Routes } from 'constants/routes';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { ShopProvider } from './context';
 import { ProductList } from './ProductList';
@@ -22,12 +22,14 @@ type Props = {
 export const ShopPage = ({ products, categories }: Props) => {
   const { user } = useAuthContext();
 
+  const { push } = useRouter();
+
   return (
     <ShopProvider initialProducts={products}>
       <div className="flex justify-between items-start gap-5 mb-10 mt-10">
         <h1 className="text-3xl font-bold">Товары сети магазинов</h1>
         {(user?.role.name === Roles.ADMIN || user?.role.name === Roles.MANAGER) && (
-          <Button color="primary" onPress={() => redirect(Routes.productCreation)}>
+          <Button color="primary" onPress={() => push(Routes.productCreation)}>
             Добавить товар
           </Button>
         )}

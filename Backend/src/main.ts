@@ -27,6 +27,7 @@ const start = async () => {
       persistAuthorization: true,
       withCredentials: true,
     },
+    jsonDocumentUrl: '/api/swagger-json',
   });
 
   app.enableCors({

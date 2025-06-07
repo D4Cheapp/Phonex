@@ -8,9 +8,9 @@ import { SupplierPage } from 'pages/supplier/SupplierPage';
 import { redirect } from 'next/navigation';
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 const Page = async ({ params }: Props) => {
   const { id } = await params;

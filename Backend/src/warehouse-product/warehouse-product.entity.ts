@@ -26,7 +26,10 @@ export class WarehouseProduct {
   @JoinColumn({ name: 'shop_id' })
   shop: Shop;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   created_at: Date;
 
   @UpdateDateColumn({

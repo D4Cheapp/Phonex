@@ -32,25 +32,36 @@ export class SupplyService {
     if (supplyStatusId) where.supply_status = { id: supplyStatusId };
     return await this.dataSource
       .getRepository(Supply)
-      .find({ where, relations: ['shop', 'supplier', 'supply_status'] })
-      .catch((e) => {
-        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
-      });
+      .find({ where, relations: ['shop', 'supplier', 'supply_status'] });
   }
 
-  async getSupplyByShopId(shopId: number) {
-    return this.dataSource
+  async getSupplyById(id: number) {
+    const supply = await this.dataSource
       .getRepository(Supply)
       .find({
         where: {
-          shop: {
-            id: shopId,
-          },
+          id,
         },
+        relations: ['shop', 'supplier', 'supply_status'],
       })
       .catch((e) => {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       });
+
+    const supplyItems = await this.dataSource
+      .getRepository(SupplyItem)
+      .find({
+        where: {
+          supply: {
+            id,
+          },
+        },
+        relations: ['product'],
+      })
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+    return { supply, supplyItems };
   }
 
   async createSupply(supplyDto: SupplyDto) {
@@ -66,7 +77,7 @@ export class SupplyService {
       });
 
     const products = await Promise.all(
-      supplyDto.supply_items.flatMap(
+      supplyDto.supply_items.map(
         async (product) =>
           await this.dataSource.getRepository(ProductSupplier).findOne({
             where: {
@@ -92,11 +103,10 @@ export class SupplyService {
     const supplyItems = await this.dataSource
       .getRepository(SupplyItem)
       .save(
-        products.map((product) => ({
+        supplyDto.supply_items.map((supplyItem) => ({
           supply: { id: supply.id },
-          product: { id: product.id },
-          quantity: product.quantity,
-          price: product.price,
+          product: { id: products.find((item) => item.id === supplyItem.product_id)?.id },
+          quantity: supplyItem.quantity,
         }))
       )
       .catch((e) => {

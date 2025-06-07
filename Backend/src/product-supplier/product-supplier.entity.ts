@@ -34,18 +34,16 @@ export class ProductSupplier {
   @JoinColumn({ name: 'supplier_id' })
   supplier: Supplier;
 
-  @CreateDateColumn({ 
-    name: 'created_at',
-    type: 'timestamp', 
-    default: () => 'CURRENT_TIMESTAMP(6)' 
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
-    name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updatedAt: Date;
+  updated_at: Date;
 }

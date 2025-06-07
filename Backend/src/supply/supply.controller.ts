@@ -24,10 +24,10 @@ export class SupplyController {
     return await this.supplyService.getAllSupplies({ shopId, supplierId, supplyStatusId });
   }
 
-  @Get(':shop_id')
+  @Get(':id')
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  async getSupplyByShopId(@Param('shop_id') shopId: number) {
-    return await this.supplyService.getSupplyByShopId(shopId);
+  async getSupplyById(@Param('id') id: number) {
+    return await this.supplyService.getSupplyById(id);
   }
 
   @Post()
@@ -36,9 +36,13 @@ export class SupplyController {
     return await this.supplyService.createSupply(supply);
   }
 
-  @Patch(':id')
+  @Patch(':supplyId')
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  async changeSupplyStatus(@Param('id') id: number, @Body() status: { supplyStatusId: number }) {
-    return await this.supplyService.changeSupplyStatus(id, status.supplyStatusId);
+  @ApiQuery({ name: 'supply_status_id', required: true })
+  async changeSupplyStatus(
+    @Param('supplyId') supplyId: number,
+    @Query('supply_status_id') supplyStatusId: number
+  ) {
+    return await this.supplyService.changeSupplyStatus(supplyId, supplyStatusId);
   }
 }

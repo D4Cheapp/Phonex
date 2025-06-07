@@ -20,10 +20,12 @@ export class SupplyDto {
 
   @ApiProperty({
     type: 'array',
-    example: {
-      product_id: 1,
-      quantity: 10,
-    },
+    example: [
+      {
+        product_id: 1,
+        quantity: 10,
+      },
+    ],
   })
   @IsNumber()
   @IsNotEmpty()

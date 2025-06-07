@@ -7,13 +7,15 @@ import { useForm } from 'react-hook-form';
 
 import { FormEvent, useState } from 'react';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import EyeHidden from 'icons/eye-hidden.svg';
 import EyeIcon from 'icons/eye.svg';
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const { replace } = useRouter();
 
   const { register, handleSubmit: onSubmit } = useForm({
     mode: 'onBlur',
@@ -29,7 +31,7 @@ export const LoginPage = () => {
     onSubmit(async data => {
       const user = await login(data);
       if (user) {
-        redirect(Routes.home);
+        replace(Routes.home);
       } else {
         addToast({
           title: 'Ошибка',
