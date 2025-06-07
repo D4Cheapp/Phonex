@@ -4,7 +4,7 @@ import { ApiQuery } from '@nestjs/swagger';
 import { RolesE } from 'src/constants/roles';
 import { RolesD } from 'src/role/roles.decorator';
 
-import { SupplyDto } from './supply.dto';
+import { ChangeSupplyStatusDto, SupplyDto } from './supply.dto';
 import { SupplyService } from './supply.service';
 
 @Controller('supply')
@@ -24,10 +24,10 @@ export class SupplyController {
     return await this.supplyService.getAllSupplies({ shopId, supplierId, supplyStatusId });
   }
 
-  @Get(':shop_id')
+  @Get(':id')
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  async getSupplyByShopId(@Param('shop_id') shopId: number) {
-    return await this.supplyService.getSupplyByShopId(shopId);
+  async getSupplyById(@Param('id') id: number) {
+    return await this.supplyService.getSupplyById(id);
   }
 
   @Post()
@@ -36,9 +36,9 @@ export class SupplyController {
     return await this.supplyService.createSupply(supply);
   }
 
-  @Patch(':id')
+  @Patch()
   @RolesD([RolesE.ADMIN, RolesE.MANAGER])
-  async changeSupplyStatus(@Param('id') id: number, @Body() status: { supplyStatusId: number }) {
-    return await this.supplyService.changeSupplyStatus(id, status.supplyStatusId);
+  async changeSupplyStatus(@Body() body: ChangeSupplyStatusDto) {
+    return await this.supplyService.changeSupplyStatus(body.supply_id, body.supply_status_id);
   }
 }

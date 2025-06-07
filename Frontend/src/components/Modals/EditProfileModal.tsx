@@ -60,6 +60,7 @@ export const EditProfileModal = ({ isOpen, user, shops, onClose }: Props) => {
         roleId: Number(data.roleId),
         password: data.password,
       });
+      onClose();
     })();
   };
 
@@ -90,7 +91,7 @@ export const EditProfileModal = ({ isOpen, user, shops, onClose }: Props) => {
                 <Select
                   label="Магазин"
                   variant="bordered"
-                  defaultSelectedKeys={[user?.shop.id.toString() || '']}
+                  defaultSelectedKeys={[user?.shop?.id.toString() || '']}
                   {...form.register('shopId')}>
                   {shops?.map(shop => <SelectItem key={shop.id}>{shop.name}</SelectItem>)}
                 </Select>

@@ -20,12 +20,26 @@ export class SupplyDto {
 
   @ApiProperty({
     type: 'array',
-    example: {
-      product_id: 1,
-      quantity: 10,
-    },
+    example: [
+      {
+        product_id: 1,
+        quantity: 10,
+      },
+    ],
   })
   @IsNumber()
   @IsNotEmpty()
   supply_items: { product_id: number; quantity: number }[];
+}
+
+export class ChangeSupplyStatusDto {
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  supply_id: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  supply_status_id: number;
 }

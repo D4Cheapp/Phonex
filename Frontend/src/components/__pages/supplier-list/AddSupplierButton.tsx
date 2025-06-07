@@ -10,7 +10,7 @@ export const AddSupplierButton = () => {
 
   return (
     <>
-      <Button color="primary" variant="bordered" onPress={() => setIsAddSupplierModalOpen(true)}>
+      <Button color="primary" onPress={() => setIsAddSupplierModalOpen(true)}>
         Добавить поставщика
       </Button>
       {isAddSupplierModalOpen && (

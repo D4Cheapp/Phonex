@@ -14,7 +14,10 @@ export class ProductCategory {
   @Column({ unique: true })
   name: string;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   created_at: Date;
 
   @UpdateDateColumn({

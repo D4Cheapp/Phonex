@@ -32,6 +32,17 @@ export class ProductController {
     return await this.productsService.getAllProducts({ search, category });
   }
 
+  @Get('supplier-product')
+  @RolesD([RolesE.ADMIN, RolesE.MANAGER])
+  @ApiQuery({ name: 'product_id', required: true, type: Number })
+  @ApiQuery({ name: 'shop_id', required: true, type: Number })
+  async getAllProductsOfSupplier(
+    @Query('product_id') productId: number,
+    @Query('shop_id') shopId: number
+  ) {
+    return await this.productsService.getAllProductsOfSupplier(productId, shopId);
+  }
+
   @Get(':id')
   async getProductById(@Param('id') id: number) {
     return await this.productsService.getProductById(id);

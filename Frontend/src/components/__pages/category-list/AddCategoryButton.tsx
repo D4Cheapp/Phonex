@@ -8,7 +8,7 @@ export const AddCategoryButton = () => {
   const { setIsAddCategoryModalOpen } = useCategoryListContext();
 
   return (
-    <Button color="primary" variant="bordered" onPress={() => setIsAddCategoryModalOpen(true)}>
+    <Button color="primary" onPress={() => setIsAddCategoryModalOpen(true)}>
       Добавить категорию
     </Button>
   );

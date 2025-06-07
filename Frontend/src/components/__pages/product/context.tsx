@@ -9,7 +9,7 @@ import { Routes } from 'constants/routes';
 
 import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 type ProductContextType = {
   isEditable?: boolean;
@@ -40,11 +40,13 @@ export const ProductProvider = ({
 }: Props) => {
   const [product, setProduct] = useState<Partial<Product> | undefined>(initialProduct);
 
+  const { push } = useRouter();
+
   const onDelete = async () => {
     if (!product?.id) return;
 
     await deleteProduct(product.id.toString());
-    return redirect(Routes.home);
+    return push(Routes.home);
   };
 
   const onSubmit = async (data: Product) => {
@@ -52,14 +54,14 @@ export const ProductProvider = ({
       await createProduct({
         ...data,
         characteristics: product?.characteristics ?? [],
-      }).then(res => redirect(Routes.productCreation + '/' + res?.id));
+      }).then(res => push(Routes.productCreation + '/' + res?.id));
     }
 
     if (!product?.id) return;
     await updateProduct(product.id.toString(), {
       ...data,
       characteristics: product.characteristics ?? [],
-    }).then(() => redirect(Routes.productCreation + '/' + product?.id));
+    }).then(() => push(Routes.productCreation + '/' + product?.id));
   };
 
   return (

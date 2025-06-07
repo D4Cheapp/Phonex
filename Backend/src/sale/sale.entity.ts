@@ -16,9 +16,8 @@ export class Sale {
   user: User;
 
   @CreateDateColumn({
-    name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  createdAt: Date;
+  created_at: Date;
 }

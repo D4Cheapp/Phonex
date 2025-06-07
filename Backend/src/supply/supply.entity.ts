@@ -28,7 +28,10 @@ export class Supply {
   @JoinColumn({ name: 'supply_status_id' })
   supply_status: SupplyStatus;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   created_at: Date;
 
   @UpdateDateColumn({

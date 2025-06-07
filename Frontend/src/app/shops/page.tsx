@@ -5,7 +5,7 @@ import { ShopListPage } from '@/components/__pages/shop-list/ShopListPage';
 const Page = async () => {
   const shops = await getShopList({});
 
-  return <ShopListPage initialShop={shops} />;
+  return <ShopListPage initialShop={shops || []} />;
 };
 
 export default Page;

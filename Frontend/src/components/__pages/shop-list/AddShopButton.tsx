@@ -10,7 +10,7 @@ export const AddShopButton = () => {
 
   return (
     <>
-      <Button color="primary" variant="bordered" onPress={() => setIsAddShopModalOpen(true)}>
+      <Button color="primary" onPress={() => setIsAddShopModalOpen(true)}>
         Добавить магазин
       </Button>
       <ShopModal isOpen={isAddShopModalOpen} onClose={() => setIsAddShopModalOpen(false)} />

@@ -16,7 +16,7 @@ type Props = {
   isForm?: boolean;
 };
 
-export const request = async <T>({ method, url, body, isForm }: Props): Promise<T | null> => {
+export const request = async <T>({ method, url, body, isForm }: Props): Promise<T | undefined> => {
   const cookies = await getCookies();
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -60,7 +60,7 @@ export const request = async <T>({ method, url, body, isForm }: Props): Promise<
     .then(data => data as T)
     .catch(error => {
       console.error('Error fetching data:', error);
-      return null;
+      return undefined;
     });
 
   return data;

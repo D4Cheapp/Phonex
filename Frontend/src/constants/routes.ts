@@ -8,6 +8,7 @@ export enum Routes {
   suppliers = '/suppliers',
   productSuppliers = '/product-supplier',
   supplies = '/supplies',
+  suppliesCreation = '/supplies/create',
   users = '/users',
   shops = '/shops',
 }

@@ -15,7 +15,7 @@ export const AddUserButton = ({ shops }: Props) => {
 
   return (
     <>
-      <Button color="primary" variant="bordered" onPress={() => setIsAddUserModalOpen(true)}>
+      <Button color="primary" onPress={() => setIsAddUserModalOpen(true)}>
         Добавить пользователя
       </Button>
       {isAddUserModalOpen && (

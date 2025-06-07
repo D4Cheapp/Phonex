@@ -1,4 +1,5 @@
 import { Routes } from 'constants/routes';
+
 import { redirect } from 'next/navigation';
 
 const NotFound = () => {

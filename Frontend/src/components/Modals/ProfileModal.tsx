@@ -1,10 +1,12 @@
+'use client';
+
 import { handleRoleName } from '@/modules/user/handle-role-name';
 import { logout } from '@/modules/user/logout';
 import { User } from '@/modules/user/types';
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
 import { Routes } from 'constants/routes';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   user: User;
@@ -13,9 +15,11 @@ type Props = {
 };
 
 export const ProfileModal = ({ user, isOpen, onClose }: Props) => {
+  const { push } = useRouter();
+
   const handleLogout = async () => {
     await logout();
-    redirect(Routes.login);
+    push(Routes.login);
   };
 
   return (
